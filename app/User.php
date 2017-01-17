@@ -40,6 +40,9 @@ class User extends Authenticatable
         return $this->hasOne(YahooToken::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function games()
     {
         return $this->belongsToMany(Game::class);

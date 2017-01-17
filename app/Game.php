@@ -20,8 +20,8 @@ class Game extends Model
         return $this->users()->syncWithoutDetaching($users);
     }
 
-    public function removeUser()
+    public function removeUser(Collection $users)
     {
-        return $this->users()->detach();
+        return $this->users()->detach($users);
     }
 }
