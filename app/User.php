@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -15,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'api_token'
     ];
 
     /**
@@ -26,4 +27,21 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function save(array $options = [])
+    {
+        $this->api_token = $this->api_token ?: Str::random(60);
+
+        parent::save($options);
+    }
+
+    public function yahooToken()
+    {
+        return $this->hasOne(YahooToken::class);
+    }
+
+    public function games()
+    {
+        return $this->belongsToMany(Game::class);
+    }
 }
