@@ -44,8 +44,8 @@ Route::group(['prefix' => 'yahoo'], function(){
                 'redirect_uri' => '/api/yahoo/callback'
             ]
         ]);
-        print $res->getBody()->getContents();
-//        return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id='. env('CONSUMER_KEY') .'&redirect_uri=/api/yahoo/callback&response_type=code&language=en-us');
+//        print $res->getBody()->getContents();
+        return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id='. env('CONSUMER_KEY') .'&redirect_uri=/api/yahoo/callback&response_type=code&language=en-us');
     });
 });
 Auth::routes();
