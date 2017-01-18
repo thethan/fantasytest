@@ -23,6 +23,22 @@ Route::get('yahoo', function () {
 
 })->middleware('auth');
 
+
+
+Route::get('games', function(){
+    $client = new GuzzleHttp\Client();
+    $res = $client->request('GET', 'https://api.login.yahoo.com/oauth2/request_auth?client_id=' . env('CONSUMER_KEY') . '&redirect_uri=https://salarycaptaincrunch.com/api/callback?api_token='.Auth::user()->api_token.'&response_type=token&language=en-us', [
+        'auth' => ['user', 'pass']
+    ]);
+//    359.l.242042
+})->middleware('auth');
+
+
+Route::group(['prefix' => 'yahoo'], function(){
+    Route::get('yahoo', function (){
+        return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id='. env('CONSUMER_KEY') .'&redirect_uri=/api/yahoo/callback?api_token='.Auth::user()->api_token.'&response_type=code&language=en-us');
+    });
+});
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');

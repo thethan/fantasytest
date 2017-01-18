@@ -32,4 +32,22 @@ Route::group(['middleware' => 'auth:api'], function () {
 
         redirect('home', 302);
     });
+
+    Route::group(['prefix' => 'yahoo'], function () {
+        Route::get('callback', function (\Illuminate\Http\Request $request) {
+
+            $client = new GuzzleHttp\Client();
+            $res = $client->request('POST', 'https://api.login.yahoo.com/oauth2/request_auth?client_id=' . env('CONSUMER_KEY') . '&redirect_uri=https://salarycaptaincrunch.com/api/callback?api_token=' . Auth::user()->api_token . '&response_type=token&language=en-us',
+                [
+                    'auth' => [env('CLIENT_KEY'), env('CLIENT_SECRET')],
+                    'form_params' => [
+                        'grant_type' => 'authorization_code',
+                        'redirect_uri' => 'https://salarycaptaincrunch.com/api/yahoo/token?api_token='.Auth::user()->api_token,
+                        'code' => $request->input('code'),
+                    ]
+                ]);
+
+            dump($res->getBody());
+        });
+    });
 });
