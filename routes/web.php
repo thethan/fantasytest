@@ -36,7 +36,7 @@ Route::get('games', function(){
 
 Route::group(['prefix' => 'yahoo'], function(){
     Route::get('yahoo', function (){
-        return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id='. env('CONSUMER_KEY') .'&redirect_uri=/api/yahoo/callback?api_token='.Auth::user()->api_token.'&response_type=code&language=en-us');
+        return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id='. env('CONSUMER_KEY') .'&redirect_uri=/api/yahoo/callback&response_type=code&language=en-us');
     });
 });
 Auth::routes();
