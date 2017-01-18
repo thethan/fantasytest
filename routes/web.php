@@ -37,15 +37,15 @@ Route::get('games', function(){
 Route::group(['prefix' => 'yahoo'], function(){
     Route::get('yahoo', function (){
         $client = new GuzzleHttp\Client();
-        $res = $client->request('POST', 'https://api.login.yahoo.com/oauth2/request_auth?client_id='.env('CONSUMER_KEY'), [
-            'form_params' => [
-                'client_id' => env('CONSUMER_KEY'),
-                'response_type' => 'code',
-                'redirect_uri' => '/api/yahoo/callback'
-            ]
-        ]);
+//        $res = $client->request('POST', 'https://api.login.yahoo.com/oauth2/request_auth?client_id='.env('CONSUMER_KEY'), [
+//            'form_params' => [
+//                'client_id' => env('CONSUMER_KEY'),
+//                'response_type' => 'code',
+//                'redirect_uri' => '/api/yahoo/callback'
+//            ]
+//        ]);
 //        print $res->getBody()->getContents();
-        return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id='. env('CONSUMER_KEY') .'&redirect_uri=api/yahoo/callback&response_type=code&language=en-us');
+        return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id='. env('CONSUMER_KEY') .'&redirect_url=https://salarycaptaincrunch.com/callback&response_type=code&language=en-us');
     });
 });
 Auth::routes();
