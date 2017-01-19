@@ -63,7 +63,7 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
                 ]
             ]);
 
-        $body = json_encode($res->getBody()->getContents(), true);
+        $body = json_decode($res->getBody()->getContents(), true);
         dump($body);
         $yahooToken = new \App\YahooToken($body);
         Auth::user()->yahooToken()->save($yahooToken);
