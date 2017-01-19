@@ -4,17 +4,23 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Auth\TokenGuard;
+use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Contracts\Auth\Guard;
 
-class AuthStateMiddleware
+class AuthStateMiddleware extends Authenticate
 {
 
     protected $guard;
 
-    public function __construct(Guard $guard)
+    public function __construct(Auth $auth, Guard $guard = null)
     {
+        /**
+         * @var TokenGuard
+         */
         $this->guard = $guard;
-        $this->input_key = 'state';
+        parent::__construct($auth);
     }
 
     /**
@@ -24,14 +30,16 @@ class AuthStateMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, ...$guards)
     {
-        $credentials['api_token'] = $request->input('state');
+        $credentials['api_token'] = $request->input('state') ?: $request->input('api_token');
+        $request->replace(['api_token' => $credentials['api_token']]);
 
-        if (!$this->guard->validate($credentials)) {
-            throw new AuthenticationException();
-        }
+        return parent::handle($request, $next, 'api');
+//        if (!$this->guard->validate($credentials)) {
+//            throw new AuthenticationException();
+//        }
 
-        return $next($request);
+//        return $next($request);
     }
 }

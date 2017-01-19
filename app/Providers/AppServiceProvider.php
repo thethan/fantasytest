@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(AuthStateMiddleware::class, function($app){
             $tokenGuard = new TokenGuard($app['auth']->createUserProvider('users'), $this->app['request']);
 
-            return new AuthStateMiddleware($tokenGuard);
+            return new AuthStateMiddleware($app['auth'], $tokenGuard);
         });
     }
 }

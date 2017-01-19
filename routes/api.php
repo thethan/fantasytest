@@ -65,8 +65,6 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
         // Take the code
 
         // Call get_token
-
-
         $client = new GuzzleHttp\Client();
         $res = $client->request('POST', 'https://api.login.yahoo.com/oauth2/get_token?client_id=' . env('CONSUMER_KEY') . '&redirect_uri=https://salarycaptaincrunch.com/api/callback?api_token=' . Auth::user()->api_token . '&response_type=token&language=en-us',
             [
