@@ -62,5 +62,7 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
                     'code' => $request->input('code'),
                 ]
             ]);
+
+        dd($res->getBody()->getContents());
     });
 });
