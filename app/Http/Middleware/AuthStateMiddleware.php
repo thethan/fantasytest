@@ -32,8 +32,9 @@ class AuthStateMiddleware extends Authenticate
      */
     public function handle($request, Closure $next, ...$guards)
     {
-        $credentials['api_token'] = $request->input('state') ?: $request->input('api_token');
-        $request->replace(['api_token' => $credentials['api_token']]);
+        $all = $request->all();
+        $all['api_token'] = $request->input('state') ?: $request->input('api_token');
+        $request->replace($all);
 
         return parent::handle($request, $next, 'api');
 //        if (!$this->guard->validate($credentials)) {
