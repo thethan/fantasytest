@@ -44,20 +44,8 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
         // Take the code
 
         // Call get_token
-
-
         $client = new GuzzleHttp\Client();
-        $res = $client->request('POST', 'https://api.login.yahoo.com/oauth2/request_auth?client_id=' . env('CONSUMER_KEY') . '&redirect_uri=https://salarycaptaincrunch.com/api/callback?api_token=' . Auth::user()->api_token . '&response_type=token&language=en-us',
-            [
-                'auth' => [env('CLIENT_KEY'), env('CLIENT_SECRET')],
-                'form_params' => [
-                    'grant_type' => 'authorization_code',
-                    'redirect_uri' => 'https://salarycaptaincrunch.com/api/yahoo/token?api_token='.Auth::user()->api_token,
-                    'code' => $request->input('code'),
-                ]
-            ]);
 
-        dump($res);
     });
 
     Route::get('callback', function (\Illuminate\Http\Request $request) {
@@ -66,11 +54,15 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
 
         // Call get_token
         $client = new GuzzleHttp\Client();
-        $res = $client->request('POST', 'https://api.login.yahoo.com/oauth2/get_token?client_id=' . env('CONSUMER_KEY') . '&redirect_uri=https://salarycaptaincrunch.com/api/callback?api_token=' . Auth::user()->api_token . '&response_type=token&language=en-us',
+        $basic = base64_encode(env('CONSUMER_KEY').':'.env('CONSUMER_SECRET'));
+        dump($request->all());
+        $res = $client->request('POST', 'https://api.login.yahoo.com/oauth2/get_token',
             [
-                'auth' => [env('CLIENT_KEY'), env('CLIENT_SECRET')],
+                'headers' => ['Authentication' => 'Basic '.base64_encode(env('CONSUMER_KEY').':'.env('CONSUMER_SECRET'))],
                 'form_params' => [
                     'grant_type' => 'authorization_code',
+                    'client_id' => env('CONSUMER_KEY'),
+                    'client_secret' => env('CONSUMER_SECRET'),
                     'redirect_uri' => 'https://salarycaptaincrunch.com/api/yahoo/callback/token?api_token='.Auth::user()->api_token,
                     'code' => $request->input('code'),
                 ]
