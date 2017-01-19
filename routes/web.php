@@ -45,7 +45,7 @@ Route::group(['prefix' => 'yahoo'], function(){
 //            ]
 //        ]);
 //        print $res->getBody()->getContents();
-        return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id='. env('CONSUMER_KEY') .'&redirect_uri=https://salarycaptaincrunch.com/yahoo/callback&response_type=code&language=en-us&state='.Auth::user()->api_token);
+        return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id='. env('CONSUMER_KEY') .'&redirect_uri=https://salarycaptaincrunch.com/apyahoo/callback&response_type=code&language=en-us&state='.Auth::user()->api_token);
     });
 });
 Auth::routes();

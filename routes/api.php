@@ -38,7 +38,13 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 
 Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
-    Route::get('callback', function (\Illuminate\Http\Request $request) {
+    Route::post('callback', function (\Illuminate\Http\Request $request) {
+        dd($request);
+
+        // Take the code
+
+        // Call get_token
+
 
         $client = new GuzzleHttp\Client();
         $res = $client->request('POST', 'https://api.login.yahoo.com/oauth2/request_auth?client_id=' . env('CONSUMER_KEY') . '&redirect_uri=https://salarycaptaincrunch.com/api/callback?api_token=' . Auth::user()->api_token . '&response_type=token&language=en-us',
