@@ -39,13 +39,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
     Route::post('callback', function (\Illuminate\Http\Request $request) {
-        dd($request);
-
-        // Take the code
-
-        // Call get_token
-        $client = new GuzzleHttp\Client();
-
+        $yahooToken = new \App\YahooToken($request->except('api_token'));
+        Auth::user()->yahooToken()->save($yahooToken);
+        return redirect('home');
     });
 
     Route::get('callback', function (\Illuminate\Http\Request $request) {
@@ -55,7 +51,6 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
         // Call get_token
         $client = new GuzzleHttp\Client();
         $basic = base64_encode(env('CONSUMER_KEY').':'.env('CONSUMER_SECRET'));
-        dump($request->all());
         $res = $client->request('POST', 'https://api.login.yahoo.com/oauth2/get_token',
             [
                 'headers' => ['Authentication' => 'Basic '.base64_encode(env('CONSUMER_KEY').':'.env('CONSUMER_SECRET'))],
@@ -63,11 +58,9 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
                     'grant_type' => 'authorization_code',
                     'client_id' => env('CONSUMER_KEY'),
                     'client_secret' => env('CONSUMER_SECRET'),
-                    'redirect_uri' => 'https://salarycaptaincrunch.com/api/yahoo/callback/token?api_token='.Auth::user()->api_token,
+                    'redirect_uri' => 'https://salarycaptaincrunch.com/api/yahoo/callback?api_token='.Auth::user()->api_token,
                     'code' => $request->input('code'),
                 ]
             ]);
-
-        dd($res->getBody()->getContents());
     });
 });

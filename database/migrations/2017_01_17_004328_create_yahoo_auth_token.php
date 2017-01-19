@@ -18,6 +18,8 @@ class CreateYahooAuthToken extends Migration
             $table->text('access_token');
             $table->string('token_type');
             $table->string('expires_in');
+            $table->string('refresh_token');
+            $table->string('xoauth_yahoo_guid');
             $table->integer('user_id');
             $table->timestamps();
         });
