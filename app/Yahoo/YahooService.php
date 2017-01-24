@@ -64,7 +64,7 @@ abstract class YahooService
         $this->build();
         dump($this->uri,$this->options);
         $this->response = $this->client->request($this->method, $this->uri, $this->options);
-
+        dump($this->response->getBody()->getContents());
         return $this->handleResponse();
     }
 
@@ -82,7 +82,7 @@ abstract class YahooService
     protected function buildOptions()
     {
         $this->options = array_merge($this->headers, $this->body);
-//        $this->options['http_errors'] = false;
+        $this->options['http_errors'] = false;
     }
 
     protected function build()
