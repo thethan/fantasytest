@@ -3,6 +3,7 @@
 namespace App\Yahoo\Oauth;
 
 use App\Yahoo\YahooService;
+use App\YahooToken;
 use Illuminate\Support\Facades\Auth;
 
 class RefreshToken extends YahooService
@@ -42,8 +43,9 @@ class RefreshToken extends YahooService
         parent::call();
         $token = Auth::user()->yahooToken;
         $token->delete();
-        dump($this->response);
-        Auth::user()->yahooToken()->save(json_decode($this->response->getBody()->getContents()));
+        $array = json_decode($this->response->getBody()->getContents(), true);
+        $token = new YahooToken($array);
+        Auth::user()->yahooToken()->save($token);
     }
 
 }
