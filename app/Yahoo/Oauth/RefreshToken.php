@@ -24,7 +24,7 @@ class RefreshToken extends YahooService
 
     protected function makeBody()
     {
-        $this->body = ['body' =>
+        $this->body = ['form_params' =>
             [
                 'grant_type' => 'refresh_token',
                 'redirect_url' => route('yahoo.callback').'?state='.Auth::user()->api_token,
