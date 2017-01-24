@@ -37,7 +37,7 @@ abstract class YahooService
 
     protected function getAuthToken()
     {
-        return Auth::user()->yahooToken->auth_token;
+        return Auth::user()->yahooToken()->auth_token;
     }
 
     /**
