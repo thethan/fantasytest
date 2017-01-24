@@ -81,6 +81,7 @@ abstract class YahooService
     protected function buildOptions()
     {
         $this->options = array_merge($this->headers, $this->body);
+        $this->options['http_errors'] = false;
     }
 
     protected function build()
