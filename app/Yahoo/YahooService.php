@@ -98,7 +98,7 @@ abstract class YahooService
 
     protected function makeBody()
     {
-        $this->body = [ 'body' => []];
+        $this->body = [];
     }
 
 
