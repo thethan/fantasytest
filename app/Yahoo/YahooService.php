@@ -82,7 +82,7 @@ abstract class YahooService
     protected function buildOptions()
     {
         $this->options = array_merge($this->headers, $this->body);
-        $this->options['http_errors'] = false;
+//        $this->options['http_errors'] = false;
     }
 
     protected function build()
@@ -96,8 +96,6 @@ abstract class YahooService
     protected function makeHeaders()
     {
         $this->headers = ['headers' => array_merge([], $this->getAuthorizationHeader())];
-
-        dump($this->headers);
     }
 
     protected function makeBody()
