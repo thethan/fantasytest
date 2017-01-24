@@ -9,7 +9,7 @@ class RefreshToken extends YahooService
 {
     protected $authorization_type = 'Basic';
 
-    protected $uri = '/oauth2/get_token';
+    protected $uri = 'https://api.login.yahoo.com/oauth2/get_token/oauth2/get_token';
 
     protected $method = 'POST';
 

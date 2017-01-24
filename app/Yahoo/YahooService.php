@@ -32,7 +32,7 @@ abstract class YahooService
 
     public function __construct($uri = null)
     {
-        $this->client = new Client(['base_uri' => 'https://fantasysports.yahooapis.com/']);
+        $this->client = new Client();
     }
 
     protected function getAuthToken()
