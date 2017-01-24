@@ -9,7 +9,7 @@ class RefreshToken extends YahooService
 {
     protected $authorization_type = 'Basic';
 
-    protected $uri = 'https://api.login.yahoo.com/oauth2/get_token/oauth2/get_token';
+    protected $uri = 'https://api.login.yahoo.com/oauth2/get_token';
 
     protected $method = 'POST';
 
@@ -19,7 +19,6 @@ class RefreshToken extends YahooService
     protected function makeHeaders()
     {
         parent::makeHeaders();
-        $this->headers['headers']['Content-Type'] = 'application/x-www-form-urlencoded';
     }
 
     protected function makeBody()

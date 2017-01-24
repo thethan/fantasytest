@@ -95,6 +95,8 @@ abstract class YahooService
     protected function makeHeaders()
     {
         $this->headers = ['headers' => array_merge([], $this->getAuthorizationHeader())];
+
+        dump($this->headers);
     }
 
     protected function makeBody()
@@ -111,7 +113,8 @@ abstract class YahooService
     protected function reauthorize()
     {
         $refreshToken = new RefreshToken();
-        dump($refreshToken->build());
+        $refreshToken->build();
+
         $response = $refreshToken->call();
         dump($response->getBody()->getContents());exit;
     }
