@@ -62,7 +62,7 @@ Route::group(['prefix' => 'yahoo'], function(){
         $players = new App\Yahoo\Fantasy\Players\Get();
         $response = $players->call();
         dump($response);
-    })->auth();
+    })->middleware('auth');
 });
 Auth::routes();
 
