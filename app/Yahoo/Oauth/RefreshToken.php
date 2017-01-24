@@ -28,7 +28,7 @@ class RefreshToken extends YahooService
             [
                 'grant_type' => 'refresh_token',
                 'redirect_url' => route('yahoo.callback').'?state='.Auth::user()->api_token,
-                'refresh_token' => Auth::user()->yahooToken()->refresh_token
+                'refresh_token' => Auth::user()->yahooToken->refresh_token
             ]
         ];
     }
