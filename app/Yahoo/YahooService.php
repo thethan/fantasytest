@@ -111,7 +111,8 @@ abstract class YahooService
     protected function reauthorize()
     {
         $refreshToken = new RefreshToken();
-        $refreshToken->call();
+        $response = $refreshToken->call();
+        dump($response);exit;
     }
 
 
