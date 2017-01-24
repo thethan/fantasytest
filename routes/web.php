@@ -16,6 +16,16 @@ Route::get('/', function () {
 
 });
 
+Route::get('/bridge', function() {
+    $pusher = App::make('pusher');
+
+    $pusher->trigger( 'test-channel',
+        'test-event',
+        array('text' => 'Preparing the Pusher Laracon.eu workshop!'));
+
+//    return view('welcome');
+});
+
 
 Route::get('yahoo', function () {
 
@@ -47,6 +57,12 @@ Route::group(['prefix' => 'yahoo'], function(){
 //        print $res->getBody()->getContents();
         return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id='. env('CONSUMER_KEY') .'&redirect_uri=https://salarycaptaincrunch.com/api/yahoo/callback&response_type=code&language=en-us&state='.Auth::user()->api_token);
     })->middleware('auth');
+
+    Route::get('players', function(){
+        $players = new App\Yahoo\Fantasy\Players\Get();
+        $response = $players->call();
+        dump($response);
+    })->auth();
 });
 Auth::routes();
 

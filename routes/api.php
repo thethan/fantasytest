@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
 
+
 });
 
 
@@ -41,7 +42,7 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
     Route::post('callback', function (\Illuminate\Http\Request $request) {
         $yahooToken = new \App\YahooToken($request->except('api_token'));
         Auth::user()->yahooToken()->save($yahooToken);
-        return redirect('home');
+
     });
 
     Route::get('callback', function (\Illuminate\Http\Request $request) {
@@ -50,7 +51,6 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
 
         // Call get_token
         $client = new GuzzleHttp\Client();
-        $basic = base64_encode(env('CONSUMER_KEY').':'.env('CONSUMER_SECRET'));
         $res = $client->request('POST', 'https://api.login.yahoo.com/oauth2/get_token',
             [
                 'headers' => ['Authentication' => 'Basic '.base64_encode(env('CONSUMER_KEY').':'.env('CONSUMER_SECRET'))],
@@ -64,8 +64,35 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
             ]);
 
         $body = json_decode($res->getBody()->getContents(), true);
-        dump($body);
         $yahooToken = new \App\YahooToken($body);
         Auth::user()->yahooToken()->save($yahooToken);
-    });
+        return redirect('home');
+    })->name('yahoo.callback');
+
+    Route::post('callback/refresh', function (\Illuminate\Http\Request $request) {
+
+        // Take the code
+
+        // Call get_token
+        $client = new GuzzleHttp\Client();
+        $res = $client->request('POST', 'https://api.login.yahoo.com/oauth2/get_token',
+            [
+                'headers' => ['Authentication' => 'Basic '.base64_encode(env('CONSUMER_KEY').':'.env('CONSUMER_SECRET'))],
+                'form_params' => [
+                    'grant_type' => 'authorization_code',
+                    'client_id' => env('CONSUMER_KEY'),
+                    'client_secret' => env('CONSUMER_SECRET'),
+                    'redirect_uri' => 'https://salarycaptaincrunch.com/api/yahoo/callback?api_token='.Auth::user()->api_token,
+                    'code' => $request->input('code'),
+                ]
+            ]);
+
+        $body = json_decode($res->getBody()->getContents(), true);
+        $yahooToken = new \App\YahooToken($body);
+        Auth::user()->yahooToken()->save($yahooToken);
+
+    })->name('yahoo.callback.refresh');
+
+
+
 });
