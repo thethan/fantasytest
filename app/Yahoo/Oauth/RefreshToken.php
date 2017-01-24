@@ -18,7 +18,10 @@ class RefreshToken extends YahooService
      */
     protected function makeHeaders()
     {
-        parent::makeHeaders();
+        $this->headers = ['headers' =>
+            ['Authentication' => 'Basic '.base64_encode(env('CONSUMER_KEY').':'.env('CONSUMER_SECRET'))]
+        ];
+
     }
 
     protected function makeBody()
