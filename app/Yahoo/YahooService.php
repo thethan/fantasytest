@@ -62,6 +62,7 @@ abstract class YahooService
     public function call()
     {
         $this->build();
+        dump($this->uri,$this->options);
         $this->response = $this->client->request($this->method, $this->uri, $this->options);
 
         return $this->handleResponse();
