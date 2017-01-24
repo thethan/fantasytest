@@ -62,9 +62,7 @@ abstract class YahooService
     public function call()
     {
         $this->build();
-        dump($this->uri,$this->options);
         $this->response = $this->client->request($this->method, $this->uri, $this->options);
-        dump($this->response->getBody()->getContents());
         return $this->handleResponse();
     }
 
@@ -115,7 +113,6 @@ abstract class YahooService
         $refreshToken->build();
 
         $response = $refreshToken->call();
-        dump($response->getBody()->getContents());exit;
     }
 
 
