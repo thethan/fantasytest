@@ -45,6 +45,7 @@ abstract class YahooService
      */
     protected function getAuthTokenType()
     {
+        dump(Auth::user()->yahooToken);
         return Auth::user()->yahooToken->token_type;
     }
 
