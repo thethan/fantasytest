@@ -37,28 +37,20 @@ Route::get('yahoo', function () {
 
 Route::get('games', function(){
     $client = new GuzzleHttp\Client();
-    $res = $client->request('GET', 'https://api.login.yahoo.com/oauth2/request_auth?client_id=' . env('CONSUMER_KEY') . '&redirect_uri=https://salarycaptaincrunch.com/api/callback?api_token='.Auth::user()->api_token.'&response_type=token&language=en-us', [
+    $client->request('GET', 'https://api.login.yahoo.com/oauth2/request_auth?client_id=' . env('CONSUMER_KEY') . '&redirect_uri=https://salarycaptaincrunch.com/api/callback?api_token='.Auth::user()->api_token.'&response_type=token&language=en-us', [
         'auth' => ['user', 'pass']
     ]);
-//    359.l.242042
 })->middleware('auth');
 
 
 Route::group(['prefix' => 'yahoo'], function(){
     Route::get('yahoo', function (){
-        $client = new GuzzleHttp\Client();
-//        $res = $client->request('POST', 'https://api.login.yahoo.com/oauth2/request_auth?client_id='.env('CONSUMER_KEY'), [
-//            'form_params' => [
-//                'client_id' => env('CONSUMER_KEY'),
-//                'response_type' => 'code',
-//                'redirect_uri' => '/api/yahoo/callback'
-//            ]
-//        ]);
-//        print $res->getBody()->getContents();
         return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id='. env('CONSUMER_KEY') .'&redirect_uri=https://salarycaptaincrunch.com/api/yahoo/callback&response_type=code&language=en-us&state='.Auth::user()->api_token);
     })->middleware('auth');
 
     Route::get('players', 'PlayersController@index');
+
+
 });
 Auth::routes();
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Yahoo\Fantasy\Players\Get;
+use App\Yahoo\Fantasy\Players\Get as GetPlayers;
 use Illuminate\Http\Request;
 
 class PlayersController extends Controller
@@ -14,7 +14,7 @@ class PlayersController extends Controller
 
     public function index()
     {
-        $service = new Get();
+        $service = new GetPlayers();
         return $service->call();
     }
 
