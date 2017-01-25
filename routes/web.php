@@ -58,7 +58,7 @@ Route::group(['prefix' => 'yahoo'], function(){
         return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id='. env('CONSUMER_KEY') .'&redirect_uri=https://salarycaptaincrunch.com/api/yahoo/callback&response_type=code&language=en-us&state='.Auth::user()->api_token);
     })->middleware('auth');
 
-    Route::get('players', ['uses' => 'Api\Yahoo\PlayersController@index'])->middleware('auth');
+    Route::get('players', 'Api\Yahoo\PlayersController@index')->middleware('auth');
 });
 Auth::routes();
 
