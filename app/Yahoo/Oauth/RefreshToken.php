@@ -2,6 +2,7 @@
 
 namespace App\Yahoo\Oauth;
 
+use App\Exceptions\YahooServiceException;
 use App\Yahoo\YahooService;
 use App\YahooToken;
 use Illuminate\Support\Facades\Auth;
@@ -40,12 +41,17 @@ class RefreshToken extends YahooService
 
     public function call()
     {
-        parent::call();
-        $token = Auth::user()->yahooToken;
-        $token->delete();
-        $array = json_decode($this->response->getBody()->getContents(), true);
-        $token = new YahooToken($array);
-        Auth::user()->yahooToken()->save($token);
+        try {
+            parent::call();
+            $token = Auth::user()->yahooToken;
+
+            $array = json_decode($this->response->getBody()->getContents(), true);
+            $token->fill($array);
+            $token->save();
+        } catch (\Exception $e){
+            throw new YahooServiceException('Failure to get Refresh Token');
+        }
+        return true;
     }
 
 }
