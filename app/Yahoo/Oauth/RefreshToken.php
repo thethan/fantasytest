@@ -50,7 +50,6 @@ class RefreshToken extends YahooService
             parent::call();
             $body = $this->response->getBody()->getContents();
             $object = (array)json_decode($body);
-            dump($object);
             $token->fill($object);
             $token->save();
 

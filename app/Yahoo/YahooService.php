@@ -45,7 +45,6 @@ abstract class YahooService
      */
     protected function getAuthTokenType()
     {
-        dump(Auth::user()->yahooToken);
         return Auth::user()->yahooToken->token_type;
     }
 
@@ -70,10 +69,6 @@ abstract class YahooService
     protected function handleResponse()
     {
         if ($this->response->getStatusCode() === 401){
-            dump($this->response->getBody()->getContents());
-
-            dump($this->reauthorize());
-            dump($this->response->getBody()->getContents());
             $this->call();
         } else {
             return $this->response;
