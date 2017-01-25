@@ -42,12 +42,13 @@ class RefreshToken extends YahooService
     public function call()
     {
         try {
-            parent::call();
             $token = Auth::user()->yahooToken;
 
+            parent::call();
             $array = json_decode($this->response->getBody()->getContents(), true);
             $token->fill($array);
             $token->save();
+
         } catch (\Exception $e){
             throw new YahooServiceException('Failure to get Refresh Token');
         }

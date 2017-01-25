@@ -71,7 +71,6 @@ abstract class YahooService
     {
         dump($this->response->getStatusCode(), $this->response->getBody()->getContents());
         if ($this->response->getStatusCode() === 401 && $this->reauthorize()){
-            $this->build();
             $this->call();
         } else {
             return $this->response;
@@ -111,7 +110,7 @@ abstract class YahooService
     protected function reauthorize()
     {
         $refreshToken = new RefreshToken();
-        $refreshToken->build();
+
         return $refreshToken->call();
     }
 
