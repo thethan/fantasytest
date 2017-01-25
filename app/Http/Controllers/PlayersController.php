@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Api\Yahoo;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Yahoo\Fantasy\Players\Get;
 use Illuminate\Http\Request;
 
