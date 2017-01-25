@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Yahoo;
 
+use App\Http\Controllers\Controller;
 use App\Yahoo\Fantasy\Players\Get;
 use Illuminate\Http\Request;
 
