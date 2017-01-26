@@ -5,6 +5,7 @@ namespace App\Yahoo\Oauth;
 use App\Exceptions\YahooServiceException;
 use App\Yahoo\YahooService;
 use App\YahooToken;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class RefreshToken extends YahooService
@@ -48,9 +49,10 @@ class RefreshToken extends YahooService
             $token = Auth::user()->yahooToken;
 
             parent::call();
-            dump($this->response->getStatusCode());
+            dump($this->response->getStatusCode()   );
             $body = $this->response->getBody()->getContents();
             $object = (array)json_decode($body);
+            $object['updated_at'] = Carbon::now();
             $token->fill($object);
             $token->save();
 
