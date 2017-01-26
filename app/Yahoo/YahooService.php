@@ -11,6 +11,8 @@ use Psr\Http\Message\ResponseInterface;
 abstract class YahooService
 {
 
+    public $uriParams = [];
+
     protected $client;
 
     protected $authorization_type = 'Bearer';
@@ -81,6 +83,13 @@ abstract class YahooService
     {
         $this->options = array_merge($this->headers, $this->body);
         $this->options['http_errors'] = false;
+    }
+
+    protected function appendUri()
+    {
+        foreach($this->uriParams as $key => $param){
+            $this->uri = str_replace("{$key}", $param, $this->uri);
+        }
     }
 
     protected function build()

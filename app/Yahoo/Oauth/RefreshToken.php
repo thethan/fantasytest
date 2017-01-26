@@ -49,7 +49,6 @@ class RefreshToken extends YahooService
             $token = Auth::user()->yahooToken;
 
             parent::call();
-            dump($this->response->getStatusCode()   );
             $body = $this->response->getBody()->getContents();
             $object = (array)json_decode($body);
             $object['updated_at'] = Carbon::now();

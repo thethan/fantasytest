@@ -30,6 +30,7 @@ class HomeController extends Controller
     {
 
         $service = new GetPlayers();
+        $service->uriParams['league_key'] = [];
         return $service->call();
 
     }
