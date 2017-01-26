@@ -88,7 +88,7 @@ abstract class YahooService
     protected function appendUri()
     {
         foreach($this->uriParams as $key => $param){
-            $this->uri = str_replace("{$key}", $param, $this->uri);
+            $this->uri = str_replace("{".$key."}", $param, $this->uri);
         }
     }
 
