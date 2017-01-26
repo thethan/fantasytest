@@ -94,6 +94,7 @@ abstract class YahooService
 
     protected function build()
     {
+        $this->appendUri();
         $this->appendJson();
         $this->makeHeaders();
         $this->makeBody();
