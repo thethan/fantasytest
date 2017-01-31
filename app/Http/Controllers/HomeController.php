@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Yahoo\Fantasy\Players\Get as GetPlayers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -29,7 +30,7 @@ class HomeController extends Controller
     public function players()
     {
 
-        $service = new GetPlayers();
+        $service = new GetPlayers(Auth::user());
         $service->uriParams['league_key'] = '359.l.242042';
         return $service->call();
 

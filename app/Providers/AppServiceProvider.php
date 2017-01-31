@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use App\Http\Middleware\AuthStateMiddleware;
+use App\Service\SaveUsersGameService;
+use App\User;
+use App\Yahoo\Fantasy\Users\Games\Get as GetUsersGames;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -35,6 +38,15 @@ class AppServiceProvider extends ServiceProvider
             $tokenGuard = new TokenGuard($app['auth']->createUserProvider('users'), $this->app['request']);
 
             return new AuthStateMiddleware($app['auth'], $tokenGuard);
+        });
+
+
+        /**
+         * Services
+         */
+        $this->app->bind(SaveUsersGameService::class, function($app){
+            $service = new GetUsersGames($app->make(User::class));
+            return new SaveUsersGameService($service);
         });
     }
 }

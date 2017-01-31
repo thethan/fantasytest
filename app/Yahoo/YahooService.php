@@ -2,9 +2,9 @@
 
 namespace App\Yahoo;
 
+use App\User;
 use App\Yahoo\Oauth\RefreshToken;
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Auth;
 use Psr\Http\Message\ResponseInterface;
 
 
@@ -12,6 +12,8 @@ abstract class YahooService
 {
 
     public $uriParams = [];
+
+    protected $user;
 
     protected $client;
 
@@ -32,14 +34,15 @@ abstract class YahooService
      */
     protected $response;
 
-    public function __construct($uri = null)
+    public function __construct(User $user)
     {
         $this->client = new Client();
+        $this->user = $user;
     }
 
     protected function getAuthToken()
     {
-        return Auth::user()->yahooToken->access_token;
+        return $this->user->yahooToken->access_token;
     }
 
     /**
@@ -47,7 +50,7 @@ abstract class YahooService
      */
     protected function getAuthTokenType()
     {
-        return Auth::user()->yahooToken->token_type;
+        return $this->user->yahooToken->token_type;
     }
 
     /**
@@ -77,6 +80,11 @@ abstract class YahooService
         } else {
             return $this->response;
         }
+    }
+
+    protected function setUser(User $user)
+    {
+        $this->user = $user;
     }
 
     protected function buildOptions()
