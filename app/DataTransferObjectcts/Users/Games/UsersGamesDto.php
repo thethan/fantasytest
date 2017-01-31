@@ -65,7 +65,6 @@ class UsersGamesDto implements Dto
     {
         $array = [];
         unset($games['games']['count']);
-        dump($games);
         // The last key value is 'count' because WHAT?! you cannot use array count in most languages!?
         foreach ($games['games'] as $key => $game) {
             $array[] = $game['game'][0];
