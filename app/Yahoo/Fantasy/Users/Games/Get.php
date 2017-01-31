@@ -6,7 +6,7 @@ use App\Yahoo\YahooService;
 
 class Get extends YahooService
 {
-    protected $uri = 'http://fantasysports.yahooapis.com/fantasy/v2/users;use_login=1/games';
+    protected $uri = 'https://fantasysports.yahooapis.com/fantasy/v2/users;use_login=1/games';
 
     public function call()
     {
