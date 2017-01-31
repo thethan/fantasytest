@@ -66,7 +66,7 @@ class UsersGamesDto implements Dto
         $array = [];
         dump($games);
         // The last key value is 'count' because WHAT?! you cannot use array count in most languages!?
-        foreach (array_pop($games) as $key => $game) {
+        foreach (array_pop($games['games']) as $key => $game) {
             $array[] = $game['game'][0];
         }
         $this->games = new Collection($array);
