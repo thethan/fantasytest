@@ -2,12 +2,13 @@
 
 namespace App\Service;
 
+use App\Contracts\Services\SetUser;
 use App\User;
 use App\Yahoo\YahooService;
 
 class SaveUsersGameService
 {
-    public function __construct(YahooService $service)
+    public function __construct(SetUser $service)
     {
         $this->call = $service;
     }
