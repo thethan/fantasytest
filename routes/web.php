@@ -53,5 +53,5 @@ Route::group(['prefix' => 'yahoo'], function(){
 });
 Auth::routes();
 
-Route::get('/players', 'HomeController@players');
+Route::get('/players', 'HomeController@players')->middleware('auth');
 Route::get('/home', 'HomeController@index');
