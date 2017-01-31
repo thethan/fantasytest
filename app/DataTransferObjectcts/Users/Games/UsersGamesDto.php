@@ -64,9 +64,9 @@ class UsersGamesDto implements Dto
     protected function setGames(array $games)
     {
         $array = [];
-        dump($games);
+        unset($games['count']);
         // The last key value is 'count' because WHAT?! you cannot use array count in most languages!?
-        foreach (array_pop($games['games']) as $key => $game) {
+        foreach ($games['games'] as $key => $game) {
             $array[] = $game['game'][0];
         }
         $this->games = new Collection($array);
