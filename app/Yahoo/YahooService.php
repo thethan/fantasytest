@@ -3,12 +3,14 @@
 namespace App\Yahoo;
 
 use App\User;
-use App\Yahoo\Oauth\RefreshToken;
 use GuzzleHttp\Client;
+use App\Yahoo\Oauth\RefreshToken;
+use App\Contracts\Services\SetUser;
 use Psr\Http\Message\ResponseInterface;
+use App\Contracts\Services\ServiceInterface;
 
 
-abstract class YahooService
+abstract class YahooService implements ServiceInterface, SetUser
 {
 
     public $uriParams = [];
@@ -34,7 +36,7 @@ abstract class YahooService
      */
     protected $response;
 
-    public function __construct(User $user)
+    public function __construct(User $user = null)
     {
         $this->client = new Client();
         $this->user = $user;
