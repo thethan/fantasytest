@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Service;
+namespace App\Services;
 
-use App\Contracts\Services\SetUser;
 use App\User;
-use App\Yahoo\YahooService;
+use App\Contracts\Yahoo\SetUser;
+use App\Contracts\Services\GetUsersGamesInterface;
 
-class SaveUsersGameService
+class SaveUsersGameService implements GetUsersGamesInterface
 {
     public function __construct(SetUser $service)
     {
