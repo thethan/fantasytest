@@ -5,6 +5,7 @@ namespace App\Services;
 use App\User;
 use App\Contracts\Yahoo\SetUser;
 use App\Contracts\Services\GetUsersGamesInterface;
+use League\Flysystem\Exception;
 
 class SaveUsersGameService implements GetUsersGamesInterface
 {
@@ -15,8 +16,12 @@ class SaveUsersGameService implements GetUsersGamesInterface
 
     public function getUsersGames(User $user)
     {
-        $this->call->setUser($user);
-        $return = $this->call->call()->getBody()->getContents();
-        dump($return);
+        try {
+            $this->call->setUser($user);
+            $response = $this->call->call();
+            dump($response);
+        } catch (\Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 }
