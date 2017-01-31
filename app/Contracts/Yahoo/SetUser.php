@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Contracts\Services;
+namespace App\Contracts\Yahoo;
 
 
 use App\User;

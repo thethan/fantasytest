@@ -6,9 +6,9 @@ use App\Exceptions\YahooServiceException;
 use App\User;
 use GuzzleHttp\Client;
 use App\Yahoo\Oauth\RefreshToken;
-use App\Contracts\Services\SetUser;
+use App\Contracts\Yahoo\SetUser;
 use Psr\Http\Message\ResponseInterface;
-use App\Contracts\Services\ServiceInterface;
+use App\Contracts\Yahoo\ServiceInterface;
 
 
 abstract class YahooService implements ServiceInterface, SetUser
@@ -77,6 +77,7 @@ abstract class YahooService implements ServiceInterface, SetUser
         $this->build();
         $this->tries = $this->tries++;
         $this->response = $this->client->request($this->method, $this->uri, $this->options);
+        dump($this->response);exit;
         return $this->handleResponse();
     }
 
