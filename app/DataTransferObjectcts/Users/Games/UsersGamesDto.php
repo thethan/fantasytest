@@ -16,6 +16,7 @@ class UsersGamesDto implements Dto
      */
     public function __construct(ResponseInterface $response)
     {
+        dump($response);
         $this->setFromResponse($response);
     }
 
