@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGameTable extends Migration
+class CreateLeagueTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateGameTable extends Migration
      */
     public function up()
     {
-        Schema::create('games', function (Blueprint $table) {
+        Schema::create('leagues', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('game_id');
+            $table->string('league_id');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateGameTable extends Migration
      */
     public function down()
     {
-        Schema::drop('games');
+        Schema::drop('leagues');
     }
 }
