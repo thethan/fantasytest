@@ -35,7 +35,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::group(['prefix' => 'yahoo', 'namespace' => 'Api'], function () {
         Route::group(['prefix' => 'users', 'namespace' => 'Users'], function() {
-            Route::get('games', 'GamesController@get');
+            Route::get('games', 'GamesController@index');
         });
     });
 });
