@@ -16,7 +16,7 @@ class UsersGamesDto implements Dto
 
     public function setFromResponse(ResponseInterface $response)
     {
-        $mainBody = json_decode(json_encode($response->getBody()->getContents()));
+        $mainBody = json_decode($response->getBody()->getContents(), true);
 
         dump($mainBody);
     }
