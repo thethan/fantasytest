@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DataTransferObjects\Users\Games\UsersGamesDto;
 use App\User;
 use App\Contracts\Yahoo\SetUser;
 use App\Contracts\Services\GetUsersGamesInterface;
@@ -20,8 +21,8 @@ class SaveUsersGameService implements GetUsersGamesInterface
     {
         try {
             $this->yahooService->setUser($user);
-            $response = $this->yahooService->call();
-            dump($response->getBody()->getContents());
+            $dto = new UsersGamesDto($this->yahooService->call());
+            dump($dto);
 
         } catch (\Exception $exception) {
             throw new Exception($exception->getMessage());
