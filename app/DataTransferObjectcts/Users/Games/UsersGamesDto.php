@@ -8,6 +8,9 @@ use Psr\Http\Message\ResponseInterface;
 
 class UsersGamesDto implements Dto
 {
+    /**
+     * @var Collection
+     */
     protected $games;
 
     /**
@@ -16,7 +19,6 @@ class UsersGamesDto implements Dto
      */
     public function __construct(ResponseInterface $response)
     {
-        dump($response);
         $this->setFromResponse($response);
     }
 
@@ -25,7 +27,7 @@ class UsersGamesDto implements Dto
      */
     public function setFromResponse(ResponseInterface $response)
     {
-        $mainBody = $this->setFromResponse($this->responseToArray($response));
+        $mainBody = $this->responseToArray($response);
         $this->setGames($this->drillDownResponse($mainBody));
     }
 

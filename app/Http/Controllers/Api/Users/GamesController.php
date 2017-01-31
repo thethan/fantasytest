@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Api\Users;
 
-use App\Contracts\Services\GetUsersGamesInterface;
-use App\Services\SaveUsersGameService;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Contracts\Services\GetUsersGamesInterface;
 
 class GamesController extends Controller
 {
