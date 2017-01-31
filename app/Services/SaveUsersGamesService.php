@@ -7,7 +7,7 @@ use App\Game;
 use App\User;
 use App\Contracts\Yahoo\SetUser;
 use App\Contracts\Services\GetUsersGamesInterface;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 use League\Flysystem\Exception;
 
 class SaveUsersGameService implements GetUsersGamesInterface
@@ -30,7 +30,7 @@ class SaveUsersGameService implements GetUsersGamesInterface
                     array('game_id' =>  $game['game_id']),
                     array('game_id' => array('unique:games,game_id'))
                 );
-                
+
                 if($validator->passes()) {
                     $model = new Game($game);
                     $model->save();
