@@ -77,7 +77,6 @@ abstract class YahooService implements ServiceInterface, SetUser
         $this->build();
         $this->tries = $this->tries++;
         $this->response = $this->client->request($this->method, $this->uri, $this->options);
-        dump($this->response->getBody()->getContents());
         return $this->handleResponse();
     }
 

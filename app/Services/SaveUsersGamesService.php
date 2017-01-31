@@ -9,17 +9,20 @@ use League\Flysystem\Exception;
 
 class SaveUsersGameService implements GetUsersGamesInterface
 {
+    protected $yahooService;
+
     public function __construct(SetUser $service)
     {
-        $this->call = $service;
+        $this->yahooService = $service;
     }
 
     public function getUsersGames(User $user)
     {
         try {
-            $this->call->setUser($user);
-            $response = $this->call->call();
-            dump($response);
+            $this->yahooService->setUser($user);
+            $response = $this->yahooService->call();
+            dump($response->getBody()->getContents());
+
         } catch (\Exception $exception) {
             throw new Exception($exception->getMessage());
         }
