@@ -22,7 +22,7 @@ class SaveUsersGameService implements GetUsersGamesInterface
         try {
             $this->yahooService->setUser($user);
             $dto = new UsersGamesDto($this->yahooService->call());
-            dump($dto->all());
+            dump($dto->toArray());
 
         } catch (\Exception $exception) {
             throw new Exception($exception->getMessage());
