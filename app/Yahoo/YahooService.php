@@ -2,6 +2,7 @@
 
 namespace App\Yahoo;
 
+use App\Exceptions\YahooServiceException;
 use App\User;
 use GuzzleHttp\Client;
 use App\Yahoo\Oauth\RefreshToken;
@@ -30,6 +31,10 @@ abstract class YahooService implements ServiceInterface, SetUser
     protected $method = 'GET';
 
     protected $headers;
+
+    protected $tries = 0;
+
+    protected $totalTries = 3;
 
     /**
      * @var ResponseInterface
@@ -68,21 +73,30 @@ abstract class YahooService implements ServiceInterface, SetUser
      */
     public function call()
     {
+
         $this->build();
+        $this->tries = $this->tries++;
         $this->response = $this->client->request($this->method, $this->uri, $this->options);
         return $this->handleResponse();
     }
 
+    /**
+     * @return $this|ResponseInterface
+     */
     protected function handleResponse()
     {
         if ($this->response->getStatusCode() === 401){
             if($this->reauthorize()) {
                 $this->call();
             }
+        } else if($this->response->getStatusCode() >= 400 && $this->tries < $this->totalTries){
+            // Tries start at 0 so less then will show if they are less than or not.
+            $this->call();
+        }else if ($this->tries >= $this->totalTries) {
+            throw new YahooServiceException('Too many tries hitting the Yahoo Service'. $this->uri);
         } else {
             return $this->response;
         }
-        return $this;
     }
 
     public function setUser(User $user)
