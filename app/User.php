@@ -50,6 +50,11 @@ class User extends Authenticatable
 
     public function leagues()
     {
-        return $this->hasMany(User::class);
+        return $this->hasManyThrough(Teams::class, League::class);
+    }
+
+    public function teams()
+    {
+        return $this->hasMany(Team::class);
     }
 }

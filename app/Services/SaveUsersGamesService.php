@@ -19,6 +19,10 @@ class SaveUsersGameService implements GetUsersGamesInterface
         $this->yahooService = $service;
     }
 
+    /**
+    * @return UsersGamesDto
+    * @throws Exception
+    **/
     public function getUsersGames(User $user)
     {
         try {
@@ -36,9 +40,10 @@ class SaveUsersGameService implements GetUsersGamesInterface
                     $model->save();
                 }
             }
-
+            return $dto;
         } catch (\Exception $exception) {
-            throw new Exception($exception->getMessage());
+            return throw new Exception($exception->getMessage());
         }
+
     }
 }

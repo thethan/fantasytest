@@ -16,7 +16,7 @@ class League extends Model
      */
     public function users()
     {
-        return $this->hasMany(League::class);
+        return $this->hasManyThrough(Team::class, User::class);
     }
 
     /**
@@ -25,5 +25,10 @@ class League extends Model
     public function games()
     {
         return $this->belongsTo(Game::class);
+    }
+
+    public function teams()
+    {
+        return $this->hasMany(Team::class);
     }
 }
