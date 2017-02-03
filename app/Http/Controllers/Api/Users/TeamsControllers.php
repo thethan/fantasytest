@@ -7,8 +7,7 @@ namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Contracts\Services\GetUsersGamesInterface;
-use App\Contracts\Services\GetUsersTeamsService;
+use App\Contracts\Services\GetUserTeamsInterface;
 
 
 class TeamsController extends Controller
@@ -16,7 +15,7 @@ class TeamsController extends Controller
     protected $service;
 
 
-    public function __construct(GetUsersTeamsService $getUsersTeamsService)
+    public function __construct(GetUserTeamsInterface $getUsersTeamsService)
     {
         $this->service = $getUsersTeamsService;
     }
