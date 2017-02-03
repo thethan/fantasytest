@@ -56,7 +56,7 @@ class AppServiceProvider extends ServiceProvider
         /**
          * Services
          */
-        $this->app->bind(GetUsersTeamsInterface::class, function($app){
+        $this->app->bind(GetUserTeamsInterface::class, function($app){
             $service = new GetUserTeams($app->make(User::class));
             return new SaveUsersTeamsService($service);
         });
