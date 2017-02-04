@@ -42,7 +42,7 @@ class SaveUsersGameService implements GetUsersGamesInterface
             }
             return $dto;
         } catch (\Exception $exception) {
-            return throw new Exception($exception->getMessage());
+            throw new Exception($exception->getMessage());
         }
 
     }

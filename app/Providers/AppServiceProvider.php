@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Contracts\Services\GetUsersGamesInterface;
-use App\Contracts\Services\GetUsersTeamsInterface;
+use App\Contracts\Services\GetUserTeamsInterface;
 use App\Http\Middleware\AuthStateMiddleware;
 
 use App\Services\SaveUsersGameService;
