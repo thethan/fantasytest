@@ -73,7 +73,10 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
 
         $body = json_decode($res->getBody()->getContents(), true);
         $yahooToken = Auth::user()->yahooToken;
-        $yahooToken->delete();
+
+        if($yahooToken instanceof \App\YahooToken) {
+            $yahooToken->delete();
+        }
         $yahooToken = new \App\YahooToken($body);
         Auth::user()->yahooToken()->sync($yahooToken);
         return redirect('home');
@@ -102,7 +105,11 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
 
         $body = json_decode($res->getBody()->getContents(), true);
         $yahooToken = Auth::user()->yahooToken;
-        $yahooToken->delete();
+
+        if($yahooToken instanceof \App\YahooToken) {
+            $yahooToken->delete();
+        }
+
         $yahooToken = new \App\YahooToken($body);
         Auth::user()->yahooToken()->save($yahooToken);
 
