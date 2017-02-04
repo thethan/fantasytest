@@ -78,7 +78,8 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
             $yahooToken->delete();
         }
         $yahooToken = new \App\YahooToken($body);
-        Auth::user()->yahooToken()->sync($yahooToken);
+
+        Auth::user()->yahooToken()->save($yahooToken);
         return redirect('home');
     })->name('yahoo.callback');
 
