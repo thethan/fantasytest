@@ -77,6 +77,9 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
         return redirect('home');
     })->name('yahoo.callback');
 
+    /**
+     *
+     */
     Route::post('callback/refresh', function (\Illuminate\Http\Request $request) {
 
         // Take the code
@@ -97,10 +100,7 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
 
         $body = json_decode($res->getBody()->getContents(), true);
         $yahooToken = new \App\YahooToken($body);
-        Auth::user()->yahooToken()->save($yahooToken);
+        Auth::user()->yahooToken()->sync($yahooToken);
 
     })->name('yahoo.callback.refresh');
-
-
-
 });
