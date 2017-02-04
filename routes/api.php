@@ -72,6 +72,8 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
             ]);
 
         $body = json_decode($res->getBody()->getContents(), true);
+        $yahooToken = Auth::user()->yahooToken;
+        $yahooToken->delete();
         $yahooToken = new \App\YahooToken($body);
         Auth::user()->yahooToken()->sync($yahooToken);
         return redirect('home');
@@ -99,8 +101,10 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
             ]);
 
         $body = json_decode($res->getBody()->getContents(), true);
+        $yahooToken = Auth::user()->yahooToken;
+        $yahooToken->delete();
         $yahooToken = new \App\YahooToken($body);
-        Auth::user()->yahooToken()->sync($yahooToken);
+        Auth::user()->yahooToken()->save($yahooToken);
 
     })->name('yahoo.callback.refresh');
 });
