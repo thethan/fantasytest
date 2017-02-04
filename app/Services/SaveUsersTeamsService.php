@@ -3,9 +3,16 @@
 namespace App\Services;
 
 use App\User;
+use App\Contracts\Yahoo\SetUser;
+use App\DataTransferObjects\Users\Games\UsersTeamsDto;
+use App\Team;
+use Illuminate\Support\Facades\Validator;
 use App\Contracts\Services\GetUserTeamsInterface;
 
-
+/**
+ * Class SaveUsersTeamsService
+ * @package App\Services
+ */
 class SaveUsersTeamsService implements GetUserTeamsInterface
 {
     protected $league;
@@ -21,7 +28,7 @@ class SaveUsersTeamsService implements GetUserTeamsInterface
     {
         try {
           $this->yahooService->setUser($user);
-          $dto = new UserTeamsDto($this->yahooService->call());
+          $dto = new UsersTeamsDto($this->yahooService->call());
 
           foreach ($dto->toArray()->all() as $team ) {
               $validator = Validator::make(
@@ -37,8 +44,8 @@ class SaveUsersTeamsService implements GetUserTeamsInterface
             }
             return $dto;
 
-        } catch (Exception $e) {
-            return throw new \Exception($e->getMessage());
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
         }
 
     }
