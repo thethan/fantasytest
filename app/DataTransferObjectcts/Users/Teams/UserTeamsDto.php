@@ -16,6 +16,7 @@ class UsersTeamsDto implements Dto
      */
     public function __construct(ResponseInterface $response)
     {
+        dump($response->getBody()->getContents());
         $this->setFromResponse($response);
     }
 
