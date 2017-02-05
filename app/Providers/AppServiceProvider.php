@@ -9,11 +9,12 @@ use App\Http\Middleware\AuthStateMiddleware;
 use App\Services\SaveUsersGameService;
 use App\Services\SaveUsersTeamsService;
 use App\User;
+use App\Yahoo\Services\Fantasy\Leagues\Get as GetLeagues;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Support\ServiceProvider;
-use App\Yahoo\Fantasy\Users\Games\Get as GetUsersGames;
-use App\Yahoo\Fantasy\Users\Games\GetTeams as GetUserTeams;
+use App\Yahoo\Services\Fantasy\Users\Games\Get as GetUsersGames;
+use App\Yahoo\Services\Fantasy\Users\Games\GetTeams as GetUserTeams;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -58,7 +59,8 @@ class AppServiceProvider extends ServiceProvider
          */
         $this->app->bind(GetUserTeamsInterface::class, function($app){
             $service = new GetUserTeams($app->make(User::class));
-            return new SaveUsersTeamsService($service);
+            $leagueService = new GetLeagues();
+            return new SaveUsersTeamsService($service, $leagueService);
         });
     }
 }

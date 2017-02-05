@@ -28,6 +28,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * @param array $options
+     */
     public function save(array $options = [])
     {
         $this->api_token = $this->api_token ?: Str::random(60);
@@ -35,6 +38,9 @@ class User extends Authenticatable
         parent::save($options);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function yahooToken()
     {
         return $this->hasOne(YahooToken::class);
@@ -48,11 +54,17 @@ class User extends Authenticatable
         return $this->belongsToMany(Game::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
     public function leagues()
     {
-        return $this->hasManyThrough(Teams::class, League::class);
+        return $this->hasManyThrough(Team::class, League::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function teams()
     {
         return $this->hasMany(Team::class);

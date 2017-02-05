@@ -3,8 +3,8 @@
 namespace App\DataTransferObjects\Users\Games;
 
 use App\Contracts\DataTransferObjects\Dto;
+use App\Contracts\Yahoo\ResponseInterface;
 use Illuminate\Support\Collection;
-use Psr\Http\Message\ResponseInterface;
 
 class UsersTeamsDto implements Dto
 {
@@ -14,15 +14,12 @@ class UsersTeamsDto implements Dto
      * UsersGamesDto constructor.
      * @param ResponseInterface $response
      */
-    public function __construct(ResponseInterface $response)
+    public function __construct(ResponseInterface $response = null)
     {
-        dump($response->getBody()->getContents());
         $this->setFromResponse($response);
     }
 
-    /**
-     * @param ResponseInterface $response
-     */
+
     public function setFromResponse(ResponseInterface $response)
     {
         $mainBody = $this->responseToArray($response);
@@ -45,7 +42,7 @@ class UsersTeamsDto implements Dto
      */
     protected function responseToArray(ResponseInterface $response)
     {
-        return json_decode($response->getBody()->getContents(), true);
+        return json_decode($response->simpleResponse());
     }
 
     /**
@@ -57,11 +54,12 @@ class UsersTeamsDto implements Dto
     }
 
     /**
-     * @param array $games
+     * @param array $teams
      */
     protected function setTeams(array $teams)
     {
         $array = [];
+        dd($teams);exit;
         unset($teams['teams']['count']);
         // The last key value is 'count' because WHAT?! you cannot use array count in most languages!?
         foreach ($teams['teams'] as $key => $game) {

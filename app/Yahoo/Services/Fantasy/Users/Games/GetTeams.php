@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Yahoo\Fantasy\Users\Games;
+namespace App\Yahoo\Services\Fantasy\Users\Games;
 
 
 use App\Contracts\Yahoo\SetUser as SetUserInterface;

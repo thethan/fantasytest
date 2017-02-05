@@ -3,8 +3,9 @@
 namespace App\Contracts\DataTransferObjects;
 
 
+use App\Contracts\Yahoo\ResponseInterface;
 use Illuminate\Contracts\Support\Arrayable;
-use Psr\Http\Message\ResponseInterface;
+
 
 interface Dto extends Arrayable 
 {

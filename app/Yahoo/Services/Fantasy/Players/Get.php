@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Yahoo\Fantasy\Players;
+namespace App\Yahoo\Services\Fantasy\Players;
 
 use App\Yahoo\YahooService;
 

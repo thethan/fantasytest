@@ -2,12 +2,16 @@
 
 namespace App\Services;
 
+use App\Exceptions\ApplicationServiceException;
 use App\User;
 use App\Contracts\Yahoo\SetUser;
-use App\DataTransferObjects\Users\Games\UsersTeamsDto;
-use App\Team;
-use Illuminate\Support\Facades\Validator;
+use App\Yahoo\Responses\User\TeamResponse;
 use App\Contracts\Services\GetUserTeamsInterface;
+use App\DataTransferObjects\Users\Games\UsersTeamsDto;
+use App\Yahoo\Responses\User\TeamResponseForSaving;
+use Hamcrest\Core\Set;
+use Illuminate\Support\Collection;
+use League\Flysystem\Exception;
 
 /**
  * Class SaveUsersTeamsService
@@ -15,38 +19,55 @@ use App\Contracts\Services\GetUserTeamsInterface;
  */
 class SaveUsersTeamsService implements GetUserTeamsInterface
 {
-    protected $league;
+    protected $leagueService;
 
     protected $yahooService;
 
-    public function __construct(SetUser $service)
+    protected $leagueIdsToSave = [];
+
+    public function __construct(SetUser $service, SetUser $leagueService)
     {
         $this->yahooService = $service;
+        $this->leagueService = $leagueService;
     }
 
     public function invoke(User $user)
     {
         try {
-          $this->yahooService->setUser($user);
-          $dto = new UsersTeamsDto($this->yahooService->call());
+            $this->yahooService->setUser($user);
+            $response = new TeamResponseForSaving($this->yahooService->call());
+            $this->saveResponse($response->simpleResponse());
 
-          foreach ($dto->toArray()->all() as $team ) {
-              $validator = Validator::make(
-                  array('team_id' =>  $team['team_id']),
-                  array('team_id' => array('unique:teams,team_id'))
-              );
 
-              if($validator->passes()) {
-                  $model = new Team($team);
-                  $model['user_id'] = $user->id;
-                  $model->save();
-              }
-            }
-            return $dto;
-
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+        } catch (Exception $e) {
+            throw new ApplicationServiceException($e->getMessage());
         }
 
     }
+
+    /**
+     * @param User $user
+     * @param Collection $gamesCollection
+     */
+    protected function saveResponse(User $user, Collection $gamesCollection)
+    {
+    }
+
+    protected function saveGame()
+    {
+
+    }
+
+    protected function getLeague(User $user)
+    {
+
+    }
+
+    protected function saveTeam(User $user, array $team)
+    {
+
+    }
+
+
+
 }
