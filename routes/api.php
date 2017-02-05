@@ -18,8 +18,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:api');
 
 Route::group(
-//    ['middleware' => 'auth:api']
-    []
+    ['middleware' => 'auth:api']
+//    []
     ,
     function () {
 
