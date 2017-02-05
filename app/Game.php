@@ -2,13 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Collection;
 
 class Game extends Model
 {
 
-    protected $fillable = ['game_id'];
+    protected $fillable = ['name','code','season','logo','game_id'];
 
     public function users()
     {
@@ -45,8 +46,30 @@ class Game extends Model
      * @param Collection $leagues
      * @return mixed
      */
-    public function addLeagueToGame(Collection $leagues)
+    public function addLeagueToGame(Collection $collectionOfIds)
     {
-        return $this->leagues()->syncWithoutDetaching($leagues);
+        return $this->leagues()->syncWithoutDetaching($collectionOfIds->all());
     }
+
+    /**
+     * @param array $options
+     * @return Model
+     */
+    public function validateAndSave(array $options = [])
+    {
+        $validator = Validator::make(
+            array('game_id' => $options['game_id']),
+            array('game_id' => array('unique:games,game_id'))
+        );
+
+        if ($validator->passes()) {
+            $model = new Game($options);
+            $model->save();
+            return $model;
+        } else {
+            return $this->where('game_id',$options['game_id'])->firstOrFail();
+        }
+    }
+
+
 }

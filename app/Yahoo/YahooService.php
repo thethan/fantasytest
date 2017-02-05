@@ -36,15 +36,16 @@ abstract class YahooService implements ServiceInterface, SetUser
 
     protected $totalTries = 3;
 
+    protected $responseClass;
+
     /**
      * @var ResponseInterface
      */
     protected $response;
 
-    public function __construct(User $user = null)
+    public function __construct()
     {
         $this->client = new Client();
-        $this->user = $user;
     }
 
     protected function getAuthToken()
@@ -73,7 +74,6 @@ abstract class YahooService implements ServiceInterface, SetUser
      */
     public function call()
     {
-
         $this->build();
         $this->tries = $this->tries++;
         $this->response = $this->client->request($this->method, $this->uri, $this->options);
@@ -98,6 +98,7 @@ abstract class YahooService implements ServiceInterface, SetUser
             return $this->response;
         }
     }
+
 
     public function setUser(User $user)
     {

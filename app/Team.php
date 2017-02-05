@@ -2,26 +2,13 @@
 
 namespace App;
 
-use Dotenv\Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
 {
-    protected $fillable = ['league_id', 'team_id', 'user_id','name'];
+    protected $fillable = ['league_id', 'team_key', 'user_id','name','logo'];
 
-    public function saveIfUnique(array $array, User $user)
-    {
-
-        $validator = Validator::make(
-            array('team_id' =>  $array['team_id']),
-            array('team_id' => array('unique:teams,team_id'))
-        );
-
-        if($validator->passes()) {
-            $model = new Team($array);
-            $user->teams()->save($model);
-        }
-    }
 
     public function leagues()
     {
@@ -31,5 +18,22 @@ class Team extends Model
     public function user()
     {
         return $this->belongsToMany(User::class);
+    }
+
+    public function validateAndSave(array $options = [])
+    {
+        dump($options);
+        $validator = Validator::make(
+            array('team_key' => $options['team_key']),
+            array('team_key' => array('unique:teams,team_key'))
+        );
+
+        if ($validator->passes()) {
+            $model = new Team($options);
+            $model->save($options);
+            return $model;
+        } else {
+            return $this->where('team_key',$options['team_key'])->firstOrFail();
+        }
     }
 }

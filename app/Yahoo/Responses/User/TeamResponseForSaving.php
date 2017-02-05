@@ -37,7 +37,7 @@ class TeamResponseForSaving implements ResponseInterface
     }
 
     /**
-     * @return Collection
+     * @return Collecto
      */
     protected function buildSimpleResponse()
     {
@@ -60,6 +60,7 @@ class TeamResponseForSaving implements ResponseInterface
         }
 
         return $gamesCollection;
+
     }
 
     protected function getGameInformation(array $array)

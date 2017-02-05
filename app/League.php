@@ -3,13 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
 
 class League extends Model
 {
+    protected $table = 'leagues';
     /**
      * @var array
      */
-    protected $fillable = ['league_id', 'game_id'];
+    protected $fillable = ['league_id', 'game_id','name'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -31,4 +33,15 @@ class League extends Model
     {
         return $this->hasMany(Team::class);
     }
+
+    public function validateAndSave(array $options = [])
+    {
+        $validator = Validator::make(
+            array('league_id' => $options['league_id']),
+            array('league_id' => array('unique:leagues,league_id'))
+        );
+
+        return $validator->passes();
+    }
+
 }

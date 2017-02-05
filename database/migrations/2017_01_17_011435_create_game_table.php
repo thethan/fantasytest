@@ -16,6 +16,9 @@ class CreateGameTable extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('game_id')->unique();
+            $table->string('name');
+            $table->string('code');
+            $table->string('season');
             $table->timestamps();
         });
     }
