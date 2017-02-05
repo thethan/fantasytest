@@ -108,6 +108,7 @@ abstract class YahooService implements ServiceInterface, SetUser
     protected function buildOptions()
     {
         $this->options = array_merge($this->headers, $this->body);
+        $this->options['debug'] = true;
         $this->options['http_errors'] = false;
     }
 
@@ -137,10 +138,14 @@ abstract class YahooService implements ServiceInterface, SetUser
         $this->body = [];
     }
 
-
+    /**
+     * 
+     */
     protected function appendJson()
     {
-        $this->uri =  (strpos($this->uri, '?') !== false) ? $this->uri .'&format=json' : $this->uri . '?format=json';
+        if(strpos($this->uri, 'format=json') === false) {
+            $this->uri = (strpos($this->uri, '?') !== false) ? $this->uri . '&format=json' : $this->uri . '?format=json';
+        }
     }
 
     protected function reauthorize()
