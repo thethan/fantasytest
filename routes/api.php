@@ -32,11 +32,10 @@ Route::group(
     Route::post('callback', function (\Illuminate\Http\Request $request) {
         $yahoo_token = new \App\YahooToken($request->except('api_token'));
         Auth::user()->yahooToken()->save($yahoo_token);
-
         redirect('home', 302);
     });
 
-    Route::group(['prefix' => 'yahoo', 'namespace' => 'Api'], function () {
+    Route::group(['prefix' => 'yahoo', 'namespace' => 'Api', 'middleware' => 'yahooToken'], function () {
         Route::group(['prefix' => 'users', 'namespace' => 'Users'], function() {
             Route::get('games', 'GamesController@index');
             Route::get('teams', 'TeamsController@index');
@@ -53,8 +52,6 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
     });
 
     Route::get('callback', function (\Illuminate\Http\Request $request) {
-
-        // Take the code
 
         // Call get_token
         $client = new GuzzleHttp\Client();
