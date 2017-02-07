@@ -8,6 +8,7 @@ use App\League;
 use App\Team;
 use App\User;
 use App\Yahoo\Responses\User\LeagueResponse;
+use Illuminate\Database\QueryException;
 use League\Flysystem\Exception;
 use App\Contracts\Yahoo\SetUser;
 use Illuminate\Support\Collection;
@@ -53,9 +54,12 @@ class SaveUsersTeamsService implements GetUserTeamsInterface
     {
         foreach ($gamesCollection->all() as $gameArray) {
             $model = new Game();
-
-            $model = $model->validateAndSave($gameArray);
-            $this->saveTeam($user, $gameArray['teams'], $model);
+            try {
+                $model = $model->validateAndSave($gameArray);
+                $this->saveTeam($user, $gameArray['teams'], $model);
+            } catch (QueryException $e){
+                continue;
+            }
         }
         return true;
     }
@@ -63,24 +67,25 @@ class SaveUsersTeamsService implements GetUserTeamsInterface
     protected function saveleague(User $user, Game $game, array $data)
     {
         $response = $this->getLeague($user, $data['team_key']);
-        $league = new League();
-        if ($league->validateAndSave(
-            ['name' => $response['name'], 'league_id' => (int) $response['league_id'], 'game_id' => $game->id]
-        )){
-            return $game->leagues()->save(new League(['name' => $response['name'], 'league_id' => $response['league_id'], 'game_id' => $game->id]));
+        $response = $response->simpleResponse()->get(0);
 
-        }
-        return League::where('league_id', $response['league_id'])->first();
+        $leagueArray = ['name' => $response['name'], 'league_id' =>  $response['league_id'], 'game_id' => $game->id];
+        $league = new League();
+        return $league->validateAndSave($leagueArray);
+
+
     }
 
     protected function getLeague(User $user, $team_key)
     {
         $league_key = explode('.t.', $team_key);
 
-        $this->leagueService->setUser($user);
         $this->leagueService->setUriParams('league_key', $league_key[0]);
+        $this->leagueService->setUser($user);
+
         $response = new LeagueResponse($this->leagueService->call());
-        return $response->simpleResponse()->first(); // Should also be the only
+
+        return $response; // Should also be the only
     }
 
 
@@ -88,15 +93,13 @@ class SaveUsersTeamsService implements GetUserTeamsInterface
     {
         foreach ($teamsCollection->all() as $teamArray) {
             $model = new Team();
-            $leagueArray['league_id'] = $teamArray['league_id'];
-            unset($teamArray['league_id']);
 
             $teamArray['user_id'] = $user->id;
             $league = $this->saveleague($user, $game, $teamArray);
 
             $teamArray['league_id'] = $league->id;
             $model->validateAndSave($teamArray);
-            dump($model);
+
         }
         return true;
     }

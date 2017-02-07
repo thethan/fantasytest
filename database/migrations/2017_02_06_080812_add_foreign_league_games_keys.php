@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLeagueTable extends Migration
+class AddForeignLeagueGamesKeys extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateLeagueTable extends Migration
      */
     public function up()
     {
-        Schema::create('leagues', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('league_id')->unique();
-            $table->integer('game_id')->unsigned();
-            $table->string('name');
-            $table->timestamps();
+        Schema::table('leagues', function(Blueprint $table) {
+            $table->foreign('game_id')->references('id')->on('games');
         });
     }
 
@@ -29,6 +25,8 @@ class CreateLeagueTable extends Migration
      */
     public function down()
     {
-        Schema::drop('leagues');
+        Schema::table('leagues', function($table) {
+            $table->dropForeign('leagues_game_id_foreign');
+        });
     }
 }

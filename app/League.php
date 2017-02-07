@@ -41,7 +41,13 @@ class League extends Model
             array('league_id' => array('unique:leagues,league_id'))
         );
 
-        return $validator->passes();
+        if ($validator->passes()) {
+            $model = new League($options);
+            $model->save();
+            return $model;
+        } else {
+            return $this->where('league_id',$options['league_id'])->firstOrFail();
+        }
     }
 
 }

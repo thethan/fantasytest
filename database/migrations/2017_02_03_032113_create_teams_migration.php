@@ -18,8 +18,8 @@ class CreateTeamsMigration extends Migration
           $table->string('team_key')->unique();
           $table->string('name');
           $table->string('logo');
-          $table->integer('user_id');
-          $table->integer('league_id');
+          $table->integer('user_id')->unsigned();
+          $table->integer('league_id')->unsigned();
           $table->timestamps();
       });
     }

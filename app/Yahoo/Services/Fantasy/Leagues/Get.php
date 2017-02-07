@@ -8,7 +8,7 @@ use App\Yahoo\YahooService;
 class Get extends YahooService implements SetUriParams
 {
     public $uriParams = ['league_key' => null];
-    protected $uri = 'https://fantasysports.yahooapis.com/fantasy/v2/league/{league_key}';
+    protected $uri = 'https://fantasysports.yahooapis.com/fantasy/v2/leagues;league_keys={league_key}';
 
 
     public function setUriParams(string $key, string $value)

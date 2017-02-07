@@ -19,7 +19,6 @@ Route::get('/user', function (Request $request) {
 
 Route::group(
     ['middleware' => 'auth:api']
-//    []
     ,
     function () {
 

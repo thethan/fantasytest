@@ -20,7 +20,7 @@ class CreateYahooAuthToken extends Migration
             $table->string('expires_in');
             $table->string('refresh_token');
             $table->string('xoauth_yahoo_guid');
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
             $table->timestamps();
         });
 

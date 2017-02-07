@@ -37,7 +37,7 @@ class TeamResponseForSaving implements ResponseInterface
     }
 
     /**
-     * @return Collecto
+     * @return Collection
      */
     protected function buildSimpleResponse()
     {
@@ -49,7 +49,6 @@ class TeamResponseForSaving implements ResponseInterface
         unset($games['count']);
 
         $gamesCollection = new Collection();
-        $leagueCollection = new Collection();
 
         foreach ($games as $game){
             // Game is index 0

@@ -22,7 +22,7 @@ class Team extends Model
 
     public function validateAndSave(array $options = [])
     {
-        dump($options);
+
         $validator = Validator::make(
             array('team_key' => $options['team_key']),
             array('team_key' => array('unique:teams,team_key'))

@@ -43,7 +43,8 @@ class LeagueResponse implements ResponseInterface
     {
         $this->simpleResponse = new Collection();
         $response = json_decode($this->response->getBody()->getContents(), true);
-        return new Collection([$response['fantasy_content']['league'][0]]);
+
+        return new Collection([$response['fantasy_content']['leagues'][0]['league'][0]]);
     }
 
 

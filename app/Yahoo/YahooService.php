@@ -76,7 +76,7 @@ abstract class YahooService implements ServiceInterface, SetUser
     {
         $this->build();
         $this->tries = $this->tries++;
-        $this->response = $this->client->request($this->method, $this->uri, $this->options);
+        $this->response = $this->client->request($this->method, $this->returnUrlWithParams(), $this->options);
         return $this->handleResponse();
     }
 
@@ -95,6 +95,7 @@ abstract class YahooService implements ServiceInterface, SetUser
         }else if ($this->tries >= $this->totalTries) {
             throw new YahooServiceException('Too many tries hitting the Yahoo Service'. $this->uri);
         } else {
+
             return $this->response;
         }
     }
@@ -108,20 +109,21 @@ abstract class YahooService implements ServiceInterface, SetUser
     protected function buildOptions()
     {
         $this->options = array_merge($this->headers, $this->body);
-        $this->options['debug'] = true;
+//        $this->options['debug'] = true;
         $this->options['http_errors'] = false;
     }
 
-    protected function appendUri()
+    protected function returnUrlWithParams()
     {
+        $url = $this->uri;
         foreach($this->uriParams as $key => $param){
-            $this->uri = str_replace("{".$key."}", $param, $this->uri);
+            $url = str_replace("{".$key."}", $param, $url);
         }
+        return $url;
     }
 
     protected function build()
     {
-        $this->appendUri();
         $this->appendJson();
         $this->makeHeaders();
         $this->makeBody();
@@ -139,7 +141,7 @@ abstract class YahooService implements ServiceInterface, SetUser
     }
 
     /**
-     * 
+     *
      */
     protected function appendJson()
     {
