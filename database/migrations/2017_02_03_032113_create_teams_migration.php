@@ -31,6 +31,6 @@ class CreateTeamsMigration extends Migration
      */
     public function down()
     {
-        Schema::drop('teams');
+        Schema::dropIfExists('teams');
     }
 }

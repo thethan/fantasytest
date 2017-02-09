@@ -29,11 +29,18 @@ class League extends Model
         return $this->belongsTo(Game::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function teams()
     {
         return $this->hasMany(Team::class);
     }
 
+    /**
+     * @param array $options
+     * @return League
+     */
     public function validateAndSave(array $options = [])
     {
         $validator = Validator::make(
@@ -49,5 +56,22 @@ class League extends Model
             return $this->where('league_id',$options['league_id'])->firstOrFail();
         }
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function draft()
+    {
+        return $this->hasOne(Draft::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function roster()
+    {
+        return $this->hasOne(League::class);
+    }
+
 
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLeagueTable extends Migration
+class CreateDraftsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateLeagueTable extends Migration
      */
     public function up()
     {
-        Schema::create('leagues', function (Blueprint $table) {
+        Schema::create('drafts', function(Blueprint $table) {
             $table->increments('id');
-            $table->string('league_id')->unique();
-            $table->integer('game_id')->unsigned();
-            $table->string('name');
-            $table->integer('roster_size', 4)->default(15);
-            $table->timestamps();
+            $table->integer('league_id')->unsigned();
+            $table->dateTime('draft_time');
+            $table->string('timezone', 100);
         });
     }
 
@@ -30,6 +28,6 @@ class CreateLeagueTable extends Migration
      */
     public function down()
     {
-        Schema::drop('leagues');
+        Schema::dropIfExists('drafts');
     }
 }

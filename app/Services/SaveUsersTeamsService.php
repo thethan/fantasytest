@@ -2,18 +2,19 @@
 
 namespace App\Services;
 
-use App\Contracts\Yahoo\SetUriParams;
 use App\Game;
-use App\League;
 use App\Team;
 use App\User;
-use App\Yahoo\Responses\User\LeagueResponse;
-use Illuminate\Database\QueryException;
+use App\League;
+use App\Yahoo\Responses\SettingsRosterResponses;
 use League\Flysystem\Exception;
 use App\Contracts\Yahoo\SetUser;
 use Illuminate\Support\Collection;
-use App\Contracts\Services\GetUserTeamsInterface;
+use App\Contracts\Yahoo\SetUriParams;
+use Illuminate\Database\QueryException;
+use App\Yahoo\Responses\User\LeagueResponse;
 use App\Exceptions\ApplicationServiceException;
+use App\Contracts\Services\GetUserTeamsInterface;
 use App\Yahoo\Responses\User\TeamResponseForSaving;
 
 /**
@@ -26,12 +27,15 @@ class SaveUsersTeamsService implements GetUserTeamsInterface
 
     protected $yahooService;
 
+    protected $leagueSettingsService;
+
     protected $leagueIdsToSave = [];
 
-    public function __construct(SetUser $service, SetUriParams $leagueService)
+    public function __construct(SetUser $service, SetUriParams $leagueService, SetUriParams $leagueSettings)
     {
         $this->yahooService = $service;
         $this->leagueService = $leagueService;
+        $this->leagueSettingsService = $leagueSettings;
     }
 
     public function invoke(User $user)
@@ -40,7 +44,6 @@ class SaveUsersTeamsService implements GetUserTeamsInterface
             $this->yahooService->setUser($user);
             $response = new TeamResponseForSaving($this->yahooService->call());
             $this->saveResponse($user, $response->simpleResponse());
-
         } catch (Exception $e) {
             throw new ApplicationServiceException($e->getMessage());
         }
@@ -71,9 +74,14 @@ class SaveUsersTeamsService implements GetUserTeamsInterface
 
         $leagueArray = ['name' => $response['name'], 'league_id' =>  $response['league_id'], 'game_id' => $game->id];
         $league = new League();
-        return $league->validateAndSave($leagueArray);
 
+        $league = $league->validateAndSave($leagueArray);
+        $this->leagueSettingsService->setUriParams('game_key', $game->game_id);
+        $this->leagueSettingsService->setUriParams('league_key', $league->league_id);
+        $rosterPositions = new SettingsRosterResponses($this->leagueSettingsService->call());
 
+        $rosterCollection = $rosterPositions->simpleResponse();
+        dump($rosterCollection);
     }
 
     protected function getLeague(User $user, $team_key)
