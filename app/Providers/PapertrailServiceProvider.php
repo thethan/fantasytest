@@ -11,10 +11,17 @@ class PapertrailServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        //
-    }
+     public function register()
+     {
+         if (app('app')->environment() == 'local') return;
+
+         $monolog   = app(\Illuminate\Log\Writer::class)->getMonolog();
+         $syslog    = new \Monolog\Handler\SyslogHandler('laravel');
+         $formatter = new \Monolog\Formatter\LineFormatter('%channel%.%level_name%: %message% %extra%');
+
+         $syslog->setFormatter($formatter);
+         $monolog->pushHandler($syslog);
+     }
 
     /**
      * Register the application services.
