@@ -170,6 +170,12 @@ return [
         //
 
         /*
+         * Bugsnag sercice provider
+         */
+         Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
+         App\Providers\PapertrailServiceProvider::class,
+
+        /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
@@ -225,6 +231,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        'Bugsnag' => Bugsnag\BugsnagLaravel\Facades\Bugsnag::class,
 
     ],
 
