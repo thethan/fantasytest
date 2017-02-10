@@ -62,7 +62,7 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
                     'grant_type' => 'authorization_code',
                     'client_id' => env('CONSUMER_KEY'),
                     'client_secret' => env('CONSUMER_SECRET'),
-                    'redirect_uri' => 'https://salarycaptaincrunch.com/api/yahoo/callback?api_token='.Auth::user()->api_token,
+                    'redirect_uri' => 'https://fantasydraftroom.com/api/yahoo/callback?api_token='.Auth::user()->api_token,
                     'code' => $request->input('code'),
                 ]
             ]);
