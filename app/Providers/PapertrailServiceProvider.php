@@ -11,16 +11,9 @@ class PapertrailServiceProvider extends ServiceProvider
      *
      * @return void
      */
-     public function register()
+     public function boot()
      {
-         if (app('app')->environment() == 'local') return;
-
-         $monolog   = app(\Illuminate\Log\Writer::class)->getMonolog();
-         $syslog    = new \Monolog\Handler\SyslogHandler('laravel');
-         $formatter = new \Monolog\Formatter\LineFormatter('%channel%.%level_name%: %message% %extra%');
-
-         $syslog->setFormatter($formatter);
-         $monolog->pushHandler($syslog);
+         
      }
 
     /**
@@ -30,6 +23,14 @@ class PapertrailServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+                if (app('app')->environment() == 'local') return;
+
+                 $monolog   = app(\Illuminate\Log\Writer::class)->getMonolog();
+                 $syslog    = new \Monolog\Handler\SyslogHandler('laravel');
+                 $formatter = new \Monolog\Formatter\LineFormatter('%channel%.%level_name%: %message% %extra%');
+
+                 $syslog->setFormatter($formatter);
+                 $monolog->pushHandler($syslog);
+             }
     }
 }
