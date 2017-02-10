@@ -18,7 +18,7 @@ class CreateLeagueTable extends Migration
             $table->string('league_id')->unique();
             $table->integer('game_id')->unsigned();
             $table->string('name');
-            $table->integer('roster_size', 4)->default(15);
+            $table->integer('roster_size', 4)->nullable();
             $table->timestamps();
         });
     }
