@@ -13,7 +13,7 @@ class PapertrailServiceProvider extends ServiceProvider
      */
      public function boot()
      {
-         
+
      }
 
     /**
@@ -31,6 +31,6 @@ class PapertrailServiceProvider extends ServiceProvider
 
                  $syslog->setFormatter($formatter);
                  $monolog->pushHandler($syslog);
-             }
+             
     }
 }
