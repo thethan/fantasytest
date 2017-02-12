@@ -3,8 +3,8 @@
 
 namespace App\Contracts\Services;
 
-use App\Contracts\DataTransferObjects\Dto;
 use App\User;
+use App\Contracts\DataTransferObjects\Dto;
 
 interface GetUserTeamsInterface
 {

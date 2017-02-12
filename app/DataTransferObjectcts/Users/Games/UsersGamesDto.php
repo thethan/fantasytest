@@ -6,7 +6,7 @@ use App\Contracts\DataTransferObjects\Dto;
 use Illuminate\Support\Collection;
 use Psr\Http\Message\ResponseInterface;
 
-class UsersGamesDto implements Dto
+class UsersGamesDto implements \App\Contracts\Yahoo\ResponseInterface
 {
     /**
      * @var Collection
@@ -17,18 +17,22 @@ class UsersGamesDto implements Dto
      * UsersGamesDto constructor.
      * @param ResponseInterface $response
      */
-    public function __construct(ResponseInterface $response)
+    public function __construct(ResponseInterface $response = null)
     {
-        $this->setFromResponse($response);
+        if ($response){
+            $this->setResponse($response);
+        }
     }
 
     /**
      * @param ResponseInterface $response
+     * @return $this
      */
-    public function setFromResponse(ResponseInterface $response)
+    public function setResponse(ResponseInterface $response)
     {
         $mainBody = $this->responseToArray($response);
         $this->setGames($this->drillDownResponse($mainBody));
+        return $this;
     }
 
     /**
@@ -50,13 +54,6 @@ class UsersGamesDto implements Dto
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    /**
-     * @return mixed
-     */
-    public function toArray()
-    {
-       return $this->games;
-    }
 
     /**
      * @param array $games
@@ -70,6 +67,11 @@ class UsersGamesDto implements Dto
             $array[] = $game['game'][0];
         }
         $this->games = new Collection($array);
+    }
+
+    public function simpleResponse()
+    {
+        return $this->games;
     }
 
 

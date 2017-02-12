@@ -2,13 +2,16 @@
 
 namespace App\Yahoo;
 
+use App\Exceptions\YahooResponseException;
 use App\Exceptions\YahooServiceException;
 use App\User;
 use GuzzleHttp\Client;
 use App\Yahoo\Oauth\RefreshToken;
 use App\Contracts\Yahoo\SetUser;
+use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use App\Contracts\Yahoo\ServiceInterface;
+use App\Contracts\Yahoo\ResponseInterface as YahooResponseInterface;
 
 
 abstract class YahooService implements ServiceInterface, SetUser
@@ -36,6 +39,9 @@ abstract class YahooService implements ServiceInterface, SetUser
 
     protected $totalTries = 3;
 
+    /**
+     * @var \App\Contracts\Yahoo\ResponseInterface
+     */
     protected $responseClass;
 
     /**
@@ -80,9 +86,7 @@ abstract class YahooService implements ServiceInterface, SetUser
         return $this->handleResponse();
     }
 
-    /**
-     * @return $this|ResponseInterface
-     */
+
     protected function handleResponse()
     {
         if ($this->response->getStatusCode() === 401){
@@ -96,9 +100,24 @@ abstract class YahooService implements ServiceInterface, SetUser
             throw new YahooServiceException('Too many tries hitting the Yahoo Service'. $this->uri);
         } else {
 
-            return $this->response;
+            return $this->responseToResponseClass($this->response);
         }
     }
+
+    /**
+     * @param ResponseInterface $response
+     * @return YahooResponseInterface
+     * @throws YahooResponseException
+     */
+    protected function responseToResponseClass(ResponseInterface $response)
+    {
+        try {
+            return $this->responseClass->setResponse($response);
+        } catch (\Exception $exception){
+            throw new YahooResponseException($exception->getMessage());
+        }
+    }
+
 
 
     public function setUser(User $user)
@@ -109,7 +128,6 @@ abstract class YahooService implements ServiceInterface, SetUser
     protected function buildOptions()
     {
         $this->options = array_merge($this->headers, $this->body);
-//        $this->options['debug'] = true;
         $this->options['http_errors'] = false;
     }
 

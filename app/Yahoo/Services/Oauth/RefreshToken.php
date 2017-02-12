@@ -7,6 +7,7 @@ use App\Yahoo\YahooService;
 use App\YahooToken;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Yahoo\Responses\RefreshToken as RefreshTokenResponse;
 
 class RefreshToken extends YahooService
 {
@@ -15,6 +16,12 @@ class RefreshToken extends YahooService
     protected $uri = 'https://api.login.yahoo.com/oauth2/get_token';
 
     protected $method = 'POST';
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->responseClass = new RefreshTokenResponse();
+    }
 
     /**
      *

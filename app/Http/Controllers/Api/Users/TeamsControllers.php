@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api\Users;
 
+use App\DataTransferObjects\Users\Teams\TeamInfoFromResponseDto;
+use App\Events\UserLoggedIntoFantasy;
+use App\Game;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Jobs\SaveUsersLeagueJob;
 use Illuminate\Support\Facades\Auth;
-use App\Contracts\Services\GetUserTeamsInterface;
 
 /**
  * Class TeamsController
@@ -13,15 +15,13 @@ use App\Contracts\Services\GetUserTeamsInterface;
  */
 class TeamsController extends Controller
 {
-    protected $service;
 
     /**
      * TeamsController constructor.
      * @param GetUserTeamsInterface $getUsersTeamsService
      */
-    public function __construct(GetUserTeamsInterface $getUsersTeamsService)
+    public function __construct( )
     {
-        $this->service = $getUsersTeamsService;
     }
 
     /**
@@ -29,8 +29,16 @@ class TeamsController extends Controller
      */
     public function index()
     {
-        $user = (env('APP_ENV') === 'local') ? User::find(1) : Auth::user();
+        $array = [];
+        $array['league_id'] = "242042";
+        $array['name']  = "Davonte's Peak";
+        $array['logo'] = "https://s.yimg.com/lq/i/identity2/profile_96c.png";
+        $array['team_key'] = '359.l.242042.t.1';
+        $job = new SaveUsersLeagueJob(Auth::user(), Game::find(24),new TeamInfoFromResponseDto($array));
+        $job->handle();
 
-        return $this->service->invoke($user);
+
+//        event(new UserLoggedIntoFantasy(Auth::user()));
+        return response()->json();
     }
 }

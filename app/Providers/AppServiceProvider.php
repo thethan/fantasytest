@@ -4,18 +4,24 @@ namespace App\Providers;
 
 use App\Contracts\Services\GetUsersGamesInterface;
 use App\Contracts\Services\GetUserTeamsInterface;
+use App\Contracts\Yahoo\Services\Leagues\GetLeaguesContract;
+use App\Contracts\Yahoo\Services\Users\GetUserGamesContract;
+use App\Contracts\Yahoo\Services\Users\GetUserTeamsContract;
+use App\DataTransferObjects\Users\Games\UsersGamesDto;
 use App\Http\Middleware\AuthStateMiddleware;
 
 use App\Services\SaveUsersGameService;
 use App\Services\SaveUsersTeamsService;
 use App\User;
+use App\Yahoo\Responses\Leagues\SettingsResponse;
+use App\Yahoo\Responses\User\TeamResponseForSaving;
 use App\Yahoo\Services\Fantasy\Leagues\Get as GetLeagues;
 use App\Yahoo\Services\Fantasy\Leagues\GetSettings;
+use App\Yahoo\Services\Fantasy\Users\Games\GetTeams;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Support\ServiceProvider;
 use App\Yahoo\Services\Fantasy\Users\Games\Get as GetUsersGames;
-use App\Yahoo\Services\Fantasy\Users\Games\GetTeams as GetUserTeams;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,23 +53,21 @@ class AppServiceProvider extends ServiceProvider
 
 
         /**
-         * Services
+         * Responses
          */
-        $this->app->bind(GetUsersGamesInterface::class, function($app){
-            $service = new GetUsersGames($app->make(User::class));
-            return new SaveUsersGameService($service);
+        $this->app->bind(GetUserGamesContract::class, function($app){
+           return new GetUsersGames(new UsersGamesDto());
         });
 
-
         /**
-         * Services
+         * Responses
          */
-        $this->app->bind(GetUserTeamsInterface::class, function($app){
-            return new SaveUsersTeamsService(
-                new GetUserTeams($app->make(User::class)),
-                new GetLeagues(),
-                new GetSettings()
-            );
+        $this->app->bind(GetUserTeamsContract::class, function($app){
+            return new GetTeams(new TeamResponseForSaving());
+        });
+
+        $this->app->bind(GetLeaguesContract::class, function($app){
+            return new GetSettings(new SettingsResponse());
         });
     }
 }

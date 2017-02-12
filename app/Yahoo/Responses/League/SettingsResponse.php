@@ -18,13 +18,15 @@ class SettingsResponse implements ResponseInterface
      * @var Collection
      */
     protected $simpleResponse;
+
     /**
-     * TeamResponse constructor.
      * @param GuzzleResponse $response
+     * @return $this
      */
-    public function __construct(GuzzleResponse $response)
+    public function setResponse(\Psr\Http\Message\ResponseInterface $response)
     {
         $this->response = $response;
+        return $this;
     }
 
     /**
@@ -42,7 +44,7 @@ class SettingsResponse implements ResponseInterface
     {
         $this->simpleResponse = new Collection();
         $response = json_decode($this->response->getBody()->getContents(), true);
-
+        dump($response);exit;
         return new Collection([$response['fantasy_content']['league'][1]['league'][0]]);
     }
 
