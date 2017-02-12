@@ -76,6 +76,8 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
         $yahooToken = new \App\YahooToken($body);
 
         Auth::user()->yahooToken()->save($yahooToken);
+        event(new \App\Events\UserLoggedIntoFantasy(Auth::user()));
+
         return redirect('home');
     })->name('yahoo.callback');
 

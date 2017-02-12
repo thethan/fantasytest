@@ -18,4 +18,5 @@ class GetTeams extends YahooService implements GetUserTeamsContract
         $this->responseClass = $response;
     }
 
+
 }

@@ -2,23 +2,19 @@
 
 namespace App\Jobs;
 
+use App\Contracts\Yahoo\Services\Leagues\GetLeaguesContract;
+use App\DataTransferObjects\Users\Teams\TeamInfoFromResponseDto;
 use App\Game;
 use App\League;
 use App\User;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Contracts\Yahoo\Services\Leagues\GetLeaguesContract;
+use Illuminate\Support\Facades\Validator;
 
-
-/**
- * Class SaveUsersLeagueJob
- * @package App\Jobs
- */
-class SaveUsersLeagueJob
+class SaveLeagueJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -31,16 +27,16 @@ class SaveUsersLeagueJob
     protected $service;
 
     /**
-     * Create a new job instance.
-     *
-     * @return void
+     * SaveLeagueJob constructor.
+     * @param User $user
+     * @param Game $game
+     * @param TeamInfoFromResponseDto $dto
      */
-    public function __construct(User $user, Game $game, Arrayable $teamsDto)
+    public function __construct(User $user, Game $game, TeamInfoFromResponseDto $dto)
     {
         $this->user = $user;
         $this->game = $game;
-        $this->dto = $teamsDto;
-
+        $this->dto  = $dto;
         $this->service = app()->make(GetLeaguesContract::class);
     }
 
@@ -57,15 +53,16 @@ class SaveUsersLeagueJob
         );
 
         if ($validator->passes()) {
-
             $this->service->setUser($this->user);
             $this->service->setUriParams('league_key', $this->dto->toArray()['league_id']);
             $this->service->setUriParams('game_key', $this->game->game_id);
-            $dto = $this->service->call();
-            dump($dto->simpleResponse());exit;
-            $league = new League(['league_id' => $this->dto->toArray()['league_id']]);
-            $this->game->leagues()->save($league);
-        }
 
+            $dto = $this->service->call();
+            dump($dto);exit;
+            $model = new League(['league_id' => $this->dto->toArray()['league_id'], 'name' => '']);
+            $model->save();
+        } else {
+            $model = Game::where('game_id', $this->game->game_id)->firstOrFail();
+        }
     }
 }

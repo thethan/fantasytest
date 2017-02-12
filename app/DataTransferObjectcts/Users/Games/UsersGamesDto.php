@@ -2,11 +2,11 @@
 
 namespace App\DataTransferObjects\Users\Games;
 
-use App\Contracts\DataTransferObjects\Dto;
 use Illuminate\Support\Collection;
 use Psr\Http\Message\ResponseInterface;
+use App\Contracts\DataTransferObjects\Dto;
 
-class UsersGamesDto implements \App\Contracts\Yahoo\ResponseInterface
+class UsersGamesDto implements Dto
 {
     /**
      * @var Collection
@@ -20,7 +20,7 @@ class UsersGamesDto implements \App\Contracts\Yahoo\ResponseInterface
     public function __construct(ResponseInterface $response = null)
     {
         if ($response){
-            $this->setResponse($response);
+            $this->setFromResponse($response);
         }
     }
 
@@ -54,6 +54,13 @@ class UsersGamesDto implements \App\Contracts\Yahoo\ResponseInterface
         return json_decode($response->getBody()->getContents(), true);
     }
 
+    /**
+     * @return mixed
+     */
+    public function toArray()
+    {
+       return $this->games;
+    }
 
     /**
      * @param array $games
@@ -71,7 +78,7 @@ class UsersGamesDto implements \App\Contracts\Yahoo\ResponseInterface
 
     public function simpleResponse()
     {
-        return $this->games;
+        $this->toArray();
     }
 
 

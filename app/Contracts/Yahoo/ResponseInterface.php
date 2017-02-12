@@ -9,7 +9,7 @@ namespace App\Contracts\Yahoo;
 interface ResponseInterface
 {
     /**
-     * @return mixed
+     * @return ResponseInterface
      */
     public function simpleResponse();
 

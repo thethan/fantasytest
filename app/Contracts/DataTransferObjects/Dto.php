@@ -10,5 +10,4 @@ use App\Contracts\Yahoo\ResponseInterface as YahooResponseInterface;
 
 interface Dto extends Arrayable, YahooResponseInterface
 {
-    public function setFromResponse(ResponseInterface $response);
 }
