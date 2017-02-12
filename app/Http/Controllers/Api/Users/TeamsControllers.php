@@ -34,11 +34,11 @@ class TeamsController extends Controller
         $array['name']  = "Davonte's Peak";
         $array['logo'] = "https://s.yimg.com/lq/i/identity2/profile_96c.png";
         $array['team_key'] = '359.l.242042.t.1';
-        $job = new SaveUsersLeagueJob(Auth::user(), Game::find(24),new TeamInfoFromResponseDto($array));
-        $job->handle();
+//        $job = new SaveUsersLeagueJob(Auth::user(), Game::find(24),new TeamInfoFromResponseDto($array));
+//        $job->handle();
 
 
-//        event(new UserLoggedIntoFantasy(Auth::user()));
+        event(new UserLoggedIntoFantasy(Auth::user()));
         return response()->json();
     }
 }
