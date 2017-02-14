@@ -39,6 +39,10 @@ Route::group(
         Route::group(['prefix' => 'users', 'namespace' => 'Users'], function() {
             Route::get('games', 'GamesController@index');
             Route::get('teams', 'TeamsController@index');
+            Route::get('league/roster', 'TeamsController@roster'); # @todo change this
+            Route::get('users', function(){
+               event(new \App\Events\UserDataInformationLoaded(\Illuminate\Support\Facades\Auth::user())) ;
+            });
         });
     });
 });

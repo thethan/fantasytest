@@ -6,7 +6,8 @@ use App\DataTransferObjects\Users\Teams\TeamInfoFromResponseDto;
 use App\Events\UserLoggedIntoFantasy;
 use App\Game;
 use App\Http\Controllers\Controller;
-use App\Jobs\SaveUsersLeagueJob;
+use App\Yahoo\Responses\Leagues\SettingsResponse;
+use App\Yahoo\Services\Fantasy\Leagues\GetSettings;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -31,5 +32,18 @@ class TeamsController extends Controller
         return response()->json([
             'data' => ['id' => 'don']
         ]);
+    }
+
+    public function roster()
+    {
+        $service = new GetSettings(new SettingsResponse());
+        $service->setUser(Auth::user());
+
+        $service->setUriParams('league_key', '721253');
+        $service->setUriParams('game_key', '359');
+
+        $dto = $service->call();
+        dump(  $dto);
+
     }
 }

@@ -82,6 +82,23 @@
     </div>
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    <script src="{{ elixir('js/app.js') }}"></script>
+
+    <script>
+
+        document.onreadystatechange = () => {
+            if (document.readyState === 'complete') {
+                console.log("doc is ready");
+                Echo.channel('App.User.{{Auth::user()->id}}')
+                    .listen('UserLoggedIntoFantasy', (e) => {
+                        console.log(e.user);
+                    })
+                    .listen('UserGamesImported', (e) => {
+                        console.log(e.games);
+                });
+            }
+        };
+
+    </script>
 </body>
 </html>

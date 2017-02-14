@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class User extends Authenticatable
@@ -47,19 +48,29 @@ class User extends Authenticatable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return mixed
      */
     public function games()
     {
-        return $this->belongsToMany(Game::class);
+        return DB::table('games')
+                ->join('teams', 'games.id', '=', 'teams.game_id')
+                ->select('games.*')
+                ->where('teams.user_id', '=', $this->id)
+                ->distinct()
+                ->get();
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     * @return mixed
      */
     public function leagues()
     {
-        return $this->hasManyThrough(Team::class, League::class);
+        return DB::table('leagues')
+            ->join('teams', 'leagues.id', '=', 'teams.league_id')
+            ->select('leagues.*')
+            ->where('teams.user_id', '=', $this->id)
+            ->distinct()
+            ->get();
     }
 
     /**

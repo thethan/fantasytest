@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Game;
 use App\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -11,24 +10,32 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use App\DataTransferObjects\Users\Teams\TeamInfoFromResponseDto;
 
-class UserGamesImported implements ShouldBroadcast
+class UserDataInformationLoaded
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $game, $user, $dto;
+    public $user, $teams, $leagues, $games;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user, Game $game, TeamInfoFromResponseDto $dto)
+    public function __construct(User $user)
     {
         $this->user = $user;
-        $this->game = $game;
-        $this->dto = $dto;
+        $this->teams = $user->teams;
+        // Needed to write sql queries to join
+        $this->games = $user->games();
+        // Needed to write sql queries to join
+        $this->leagues = $user->leagues();
     }
+
+    protected function games(User $user)
+    {
+        return $user->games;
+    }
+
 
     /**
      * Get the channels the event should broadcast on.

@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\UserLeaguesImported;
 use App\Events\UserTeamsImported;
+use App\Game;
 use App\Team;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,11 +36,12 @@ class ImportTeamsFromYahoo implements ShouldQueue
         );
 
         if ($validator->passes()) {
-
+            $game = Game::where('game_id', $event->dto->toArray()['game_id'])->firstOrFail();
             $model = new Team([
                     'name' => $event->dto->toArray()['name'],
                     'team_key' => $event->dto->toArray()['team_key'],
                     'logo' => $event->dto->toArray()['logo'],
+                    'game_id' => $game->id,
                     'user_id' => $event->user->id,
                 ]
             );

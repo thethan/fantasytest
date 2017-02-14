@@ -20,6 +20,7 @@ class TeamInfoFromResponseDto implements Arrayable
 
     protected $code;
 
+
     public function __construct(array $array)
     {
         $this->league_id = $array['league_id'];

@@ -3,12 +3,14 @@
 namespace App\Events;
 
 use App\User;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 
-class UserLoggedIntoFantasy
+class UserLoggedIntoFantasy implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -23,4 +25,8 @@ class UserLoggedIntoFantasy
         $this->user = $user;
     }
 
+    public function broadcastOn()
+    {
+        return new PrivateChannel('App.User.'.$this->user->id);
+    }
 }

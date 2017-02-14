@@ -57,7 +57,7 @@ class ImportUserDataFromYahoo
 
             if ($validator->passes()) {
                 $model = new Game([
-                    'code' => $game['code'],
+                        'code' => $game['code'],
                         'season' => $game['season'],
                         'game_id' => $game['game_id'],
                         'name' => $game['game_name'],
