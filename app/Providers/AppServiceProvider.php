@@ -37,6 +37,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+      
+        $bugsnag = Bugsnag\Client::make("fb0bf926ee01d5d6788e4c40a5721937");
+        Bugsnag\Handler::register($bugsnag);
         $this->app->alias('bugsnag.logger', \Illuminate\Contracts\Logging\Log::class);
         $this->app->alias('bugsnag.logger', \Psr\Log\LoggerInterface::class);
         /**
