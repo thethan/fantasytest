@@ -39,6 +39,10 @@ Route::group(
         Route::group(['prefix' => 'users', 'namespace' => 'Users'], function() {
             Route::get('games', 'GamesController@index');
             Route::get('teams', 'TeamsController@index');
+            Route::get('league/roster', 'TeamsController@roster'); # @todo change this
+            Route::get('users', function(){
+               event(new \App\Events\UserDataInformationLoaded(\Illuminate\Support\Facades\Auth::user())) ;
+            });
         });
     });
 });
@@ -76,6 +80,8 @@ Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
         $yahooToken = new \App\YahooToken($body);
 
         Auth::user()->yahooToken()->save($yahooToken);
+        event(new \App\Events\UserLoggedIntoFantasy(Auth::user()));
+
         return redirect('home');
     })->name('yahoo.callback');
 

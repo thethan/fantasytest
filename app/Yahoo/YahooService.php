@@ -2,13 +2,16 @@
 
 namespace App\Yahoo;
 
+use App\Exceptions\YahooResponseException;
 use App\Exceptions\YahooServiceException;
 use App\User;
 use GuzzleHttp\Client;
 use App\Yahoo\Oauth\RefreshToken;
 use App\Contracts\Yahoo\SetUser;
+use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use App\Contracts\Yahoo\ServiceInterface;
+use App\Contracts\Yahoo\ResponseInterface as YahooResponseInterface;
 
 
 abstract class YahooService implements ServiceInterface, SetUser
@@ -36,6 +39,9 @@ abstract class YahooService implements ServiceInterface, SetUser
 
     protected $totalTries = 3;
 
+    /**
+     * @var \App\Contracts\Yahoo\ResponseInterface
+     */
     protected $responseClass;
 
     /**
@@ -81,7 +87,8 @@ abstract class YahooService implements ServiceInterface, SetUser
     }
 
     /**
-     * @return $this|ResponseInterface
+     * @return YahooResponseInterface
+     * @throws YahooServiceException
      */
     protected function handleResponse()
     {
@@ -96,23 +103,45 @@ abstract class YahooService implements ServiceInterface, SetUser
             throw new YahooServiceException('Too many tries hitting the Yahoo Service'. $this->uri);
         } else {
 
-            return $this->response;
+            return $this->responseToResponseClass($this->response);
+        }
+    }
+
+    /**
+     * @param ResponseInterface $response
+     * @return YahooResponseInterface
+     * @throws YahooResponseException
+     */
+    protected function responseToResponseClass(ResponseInterface $response)
+    {
+        try {
+            return $this->responseClass->setResponse($response);
+        } catch (\Exception $exception){
+            throw new YahooResponseException($exception->getMessage());
         }
     }
 
 
+    /**
+     * @param User $user
+     */
     public function setUser(User $user)
     {
         $this->user = $user;
     }
 
+    /**
+     *
+     */
     protected function buildOptions()
     {
         $this->options = array_merge($this->headers, $this->body);
-//        $this->options['debug'] = true;
         $this->options['http_errors'] = false;
     }
 
+    /**
+     * @return mixed
+     */
     protected function returnUrlWithParams()
     {
         $url = $this->uri;
@@ -122,6 +151,9 @@ abstract class YahooService implements ServiceInterface, SetUser
         return $url;
     }
 
+    /**
+     *
+     */
     protected function build()
     {
         $this->appendJson();
@@ -130,11 +162,17 @@ abstract class YahooService implements ServiceInterface, SetUser
         $this->buildOptions();
     }
 
+    /**
+     *
+     */
     protected function makeHeaders()
     {
         $this->headers = ['headers' => array_merge([], $this->getAuthorizationHeader())];
     }
 
+    /**
+     *
+     */
     protected function makeBody()
     {
         $this->body = [];
@@ -150,6 +188,9 @@ abstract class YahooService implements ServiceInterface, SetUser
         }
     }
 
+    /**
+     * @return bool|mixed|ResponseInterface
+     */
     protected function reauthorize()
     {
         $refreshToken = new RefreshToken();

@@ -2,8 +2,8 @@
 
 namespace App\Yahoo\Responses\User;
 
-use App\Contracts\Yahoo\ResponseInterface;
 use Illuminate\Support\Collection;
+use App\Contracts\Yahoo\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as GuzzleResponse;
 
 
@@ -23,9 +23,17 @@ class TeamResponseForSaving implements ResponseInterface
      * TeamResponse constructor.
      * @param GuzzleResponse $response
      */
-    public function __construct(GuzzleResponse $response)
+    public function __construct(GuzzleResponse $response =  null)
+    {
+        if($response){
+            $this->setResponse($response);
+        }
+    }
+
+    public function setResponse(\Psr\Http\Message\ResponseInterface $response)
     {
         $this->response = $response;
+        return $this;
     }
 
     /**
@@ -83,7 +91,6 @@ class TeamResponseForSaving implements ResponseInterface
         array_pop($array['teams']); // Get rid if the count
 
         foreach ($array['teams'] as $key => $team) {
-
             // Seems like auto teams does not exist
             if(array_key_exists(1, $team['team'])) {
                 $teamsCollection->push(

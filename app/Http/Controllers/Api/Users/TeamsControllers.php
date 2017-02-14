@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api\Users;
 
+use App\DataTransferObjects\Users\Teams\TeamInfoFromResponseDto;
+use App\Events\UserLoggedIntoFantasy;
+use App\Game;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Yahoo\Responses\Leagues\SettingsResponse;
+use App\Yahoo\Services\Fantasy\Leagues\GetSettings;
 use Illuminate\Support\Facades\Auth;
-use App\Contracts\Services\GetUserTeamsInterface;
 
 /**
  * Class TeamsController
@@ -13,24 +16,34 @@ use App\Contracts\Services\GetUserTeamsInterface;
  */
 class TeamsController extends Controller
 {
-    protected $service;
-
-    /**
-     * TeamsController constructor.
-     * @param GetUserTeamsInterface $getUsersTeamsService
-     */
-    public function __construct(GetUserTeamsInterface $getUsersTeamsService)
-    {
-        $this->service = $getUsersTeamsService;
-    }
-
     /**
      * @return mixed
      */
     public function index()
     {
-        $user = (env('APP_ENV') === 'local') ? User::find(1) : Auth::user();
+        $array = [];
+        $array['league_id'] = "242042";
+        $array['name']  = "Davonte's Peak";
+        $array['logo'] = "https://s.yimg.com/lq/i/identity2/profile_96c.png";
+        $array['team_key'] = '359.l.242042.t.1';
 
-        return $this->service->invoke($user);
+        event(new UserLoggedIntoFantasy(Auth::user()));
+
+        return response()->json([
+            'data' => ['id' => 'don']
+        ]);
+    }
+
+    public function roster()
+    {
+        $service = new GetSettings(new SettingsResponse());
+        $service->setUser(Auth::user());
+
+        $service->setUriParams('league_key', '721253');
+        $service->setUriParams('game_key', '359');
+
+        $dto = $service->call();
+        dump(  $dto);
+
     }
 }

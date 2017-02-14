@@ -3,11 +3,11 @@
 namespace App\Contracts\DataTransferObjects;
 
 
-use App\Contracts\Yahoo\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use Illuminate\Contracts\Support\Arrayable;
+use App\Contracts\Yahoo\ResponseInterface as YahooResponseInterface;
 
 
-interface Dto extends Arrayable 
+interface Dto extends Arrayable, YahooResponseInterface
 {
-    public function setFromResponse(ResponseInterface $response);
 }

@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers\Api\Users;
 
-use App\Http\Controllers\Controller;
+use App\Contracts\Yahoo\Services\Users\GetUserGamesContract;
+use App\Jobs\GetUserGamesJob;
+use Illuminate\Contracts\Queue\Job;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 use App\Contracts\Services\GetUsersGamesInterface;
 
 class GamesController extends Controller
 {
-    protected $service;
+    protected $job;
 
-
-    public function __construct(GetUsersGamesInterface $usersGameService)
+    /**
+     * GamesController constructor.
+     * @param GetUserGamesJob $job
+     */
+    public function __construct()
     {
-        $this->service = $usersGameService;
+
     }
 
     /**
@@ -21,6 +27,7 @@ class GamesController extends Controller
      */
     public function index()
     {
-        return $this->service->getUsersGames(Auth::user());
+        $user = Auth::user();
+        $this->dispatch(new GetUserGamesJob($user));
     }
 }

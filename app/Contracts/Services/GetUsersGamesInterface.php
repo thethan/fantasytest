@@ -7,5 +7,4 @@ use App\User;
 
 interface GetUsersGamesInterface
 {
-    public function getUsersGames(User $user);
 }

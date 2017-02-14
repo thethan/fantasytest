@@ -20,6 +20,7 @@ class CreateTeamsMigration extends Migration
           $table->string('logo');
           $table->integer('user_id')->unsigned();
           $table->integer('league_id')->unsigned();
+          $table->integer('game_id')->unsigned();
           $table->timestamps();
       });
     }

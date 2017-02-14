@@ -2,9 +2,9 @@
 
 namespace App\DataTransferObjects\Users\Games;
 
-use App\Contracts\DataTransferObjects\Dto;
 use Illuminate\Support\Collection;
 use Psr\Http\Message\ResponseInterface;
+use App\Contracts\DataTransferObjects\Dto;
 
 class UsersGamesDto implements Dto
 {
@@ -17,18 +17,22 @@ class UsersGamesDto implements Dto
      * UsersGamesDto constructor.
      * @param ResponseInterface $response
      */
-    public function __construct(ResponseInterface $response)
+    public function __construct(ResponseInterface $response = null)
     {
-        $this->setFromResponse($response);
+        if ($response){
+            $this->setFromResponse($response);
+        }
     }
 
     /**
      * @param ResponseInterface $response
+     * @return $this
      */
-    public function setFromResponse(ResponseInterface $response)
+    public function setResponse(ResponseInterface $response)
     {
         $mainBody = $this->responseToArray($response);
         $this->setGames($this->drillDownResponse($mainBody));
+        return $this;
     }
 
     /**
@@ -70,6 +74,11 @@ class UsersGamesDto implements Dto
             $array[] = $game['game'][0];
         }
         $this->games = new Collection($array);
+    }
+
+    public function simpleResponse()
+    {
+        $this->toArray();
     }
 
 

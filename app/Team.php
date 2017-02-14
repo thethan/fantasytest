@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
 {
-    protected $fillable = ['league_id', 'team_key', 'user_id','name','logo'];
+    protected $fillable = ['league_id', 'team_key', 'user_id','name','logo', 'game_id'];
 
 
     public function leagues()
     {
-        return $this->belongsTo(League::class);
+        return $this->hasOne(League::class);
+    }
+
+    public function games()
+    {
+        return $this->belongsTo(Game::class);
     }
 
     public function user()

@@ -43,6 +43,14 @@ class Game extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function games()
+    {
+        return $this->hasMany(Team::class);
+    }
+
+    /**
      * @param Collection $leagues
      * @return mixed
      */

@@ -4,6 +4,7 @@ namespace App\DataTransferObjects\Users\Games;
 
 use App\Contracts\DataTransferObjects\Dto;
 use App\Contracts\Yahoo\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as GuzzleResponse;
 use Illuminate\Support\Collection;
 
 class UsersTeamsDto implements Dto
@@ -14,13 +15,10 @@ class UsersTeamsDto implements Dto
      * UsersGamesDto constructor.
      * @param ResponseInterface $response
      */
-    public function __construct(ResponseInterface $response = null)
-    {
-        $this->setFromResponse($response);
-    }
 
 
-    public function setFromResponse(ResponseInterface $response)
+
+    public function setFrom(GuzzleResponse $response)
     {
         $mainBody = $this->responseToArray($response);
         $this->setTeams($this->drillDownResponse($mainBody));
@@ -59,7 +57,6 @@ class UsersTeamsDto implements Dto
     protected function setTeams(array $teams)
     {
         $array = [];
-        dd($teams);exit;
         unset($teams['teams']['count']);
         // The last key value is 'count' because WHAT?! you cannot use array count in most languages!?
         foreach ($teams['teams'] as $key => $game) {
