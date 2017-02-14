@@ -30,7 +30,7 @@ class ImportTeamsFromYahoo implements ShouldQueue
     public function handle(UserLeaguesImported $event)
     {
         $validator = Validator::make(
-            array('team_key' => $event->dto->toArray()['league_id']),
+            array('team_key' => $event->dto->toArray()['team_key']),
             array('team_key' => array('unique:teams,team_key'))
         );
 
@@ -47,5 +47,7 @@ class ImportTeamsFromYahoo implements ShouldQueue
         } else {
             $model = Team::where('team_key', $event->dto->toArray()['team_key'])->firstOrFail();
         }
+
+
     }
 }
