@@ -14,5 +14,15 @@
     "lodash": "^4.16.2",
     "vue": "^2.0.1",
     "vue-resource": "^1.0.3"
+  },
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "http": "0.0.0",
+    "io": "^0.1.10",
+    "ioredis": "^2.5.0",
+    "laravel-echo": "^1.2.4",
+    "laravel-elixir": "^6.0.0-15",
+    "pusher-js": "^4.0.0",
+    "socket.io": "^1.7.2"
   }
 }
