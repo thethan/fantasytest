@@ -9,6 +9,8 @@ use App\Contracts\Yahoo\Services\Users\GetUserGamesContract;
 use App\Contracts\Yahoo\Services\Users\GetUserTeamsContract;
 
 use App\Yahoo\Responses\User\GetTeamsResponse;
+use Bugsnag\Client;
+use Bugsnag\Handler;
 use Illuminate\Auth\TokenGuard;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Support\ServiceProvider;
@@ -38,8 +40,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
       
-        $bugsnag = Bugsnag\Client::make("fb0bf926ee01d5d6788e4c40a5721937");
-        Bugsnag\Handler::register($bugsnag);
+        $bugsnag = Client::make("fb0bf926ee01d5d6788e4c40a5721937");
+        Handler::register($bugsnag);
         $this->app->alias('bugsnag.logger', \Illuminate\Contracts\Logging\Log::class);
         $this->app->alias('bugsnag.logger', \Psr\Log\LoggerInterface::class);
         /**
