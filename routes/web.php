@@ -16,8 +16,8 @@ Route::get('/', function () {
 
 });
 
-Route::('/bugsnag', function(){
-    Bugsnag::notifyError('ErrorType', 'Test Error');
+Route::get('/bugsnag', function(){
+    \Bugsnag\BugsnagLaravel\Facades\Bugsnag::notifyError('ErrorType', 'Test Error');
 });
 
 Route::get('/bridge', function() {
