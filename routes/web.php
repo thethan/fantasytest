@@ -16,6 +16,10 @@ Route::get('/', function () {
 
 });
 
+Route::('/bugsnag', function(){
+    Bugsnag::notifyError('ErrorType', 'Test Error');
+});
+
 Route::get('/bridge', function() {
     $pusher = App::make('pusher');
 
@@ -25,6 +29,7 @@ Route::get('/bridge', function() {
 
 //    return view('welcome');
 });
+
 
 
 Route::get('yahoo', function () {
