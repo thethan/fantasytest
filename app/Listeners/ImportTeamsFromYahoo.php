@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\UserDataInformationLoaded;
 use App\Events\UserLeaguesImported;
 use App\Events\UserTeamsImported;
 use App\Game;

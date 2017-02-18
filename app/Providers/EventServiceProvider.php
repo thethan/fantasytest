@@ -20,8 +20,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\ImportLeaguesFromYahoo'
         ],
         'App\Events\UserLeaguesImported' => [
-            'App\Listeners\ImportTeamsFromYahoo'
-        ]
+            'App\Listeners\ImportTeamsFromYahoo',
+            'App\Listeners\ImportLeagueRoster'
+        ],
 
     ];
 

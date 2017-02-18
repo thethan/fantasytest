@@ -20,4 +20,14 @@ const app = new Vue({
 });
 
 
-console.log(window.Echo);
+import EchoLibrary from "laravel-echo"
+
+window.Echo = new EchoLibrary({
+    broadcaster: 'pusher',
+    key: '4cf724c42f1634a6f6a8'
+});
+
+Echo.private('App.User.1')
+    .listen('UserDataInformationLoaded', (e) => {
+        console.log(e);
+    });

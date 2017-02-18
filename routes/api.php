@@ -41,7 +41,7 @@ Route::group(
             Route::get('teams', 'TeamsController@index');
             Route::get('league/roster', 'TeamsController@roster'); # @todo change this
             Route::get('users', function(){
-               event(new \App\Events\UserDataInformationLoaded(\Illuminate\Support\Facades\Auth::user())) ;
+                return response()->json(['data' => ['user' => Auth::user(), 'games' => Auth::user()->games(), 'leagues' => Auth::user()->leagues(),'teams' => Auth::user()->teams ]]);
             });
         });
     });

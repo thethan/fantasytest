@@ -44,7 +44,10 @@ class SettingsResponse implements ResponseInterface
     {
         $this->simpleResponse = new Collection();
         $response = json_decode($this->response->getBody()->getContents(), true);
-        return new Collection([$response['fantasy_content']['league'][1]['league'][0]]);
+        $settings = $response['fantasy_content']['league'][1]['settings'][0];
+        $settings = array_merge($settings, $response['fantasy_content']['league'][0]);
+        $settings['toob'];exit;
+        return new Collection([$settings]);
     }
 
 }

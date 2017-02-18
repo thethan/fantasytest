@@ -79,6 +79,10 @@
         </nav>
 
         @yield('content')
+        @if(Auth::check())
+            <input style="display: none" id="user_id" value="{{ Auth::user()->id }}">
+        @endif
+
     </div>
 
     <!-- Scripts -->
@@ -90,13 +94,10 @@
             if (document.readyState === 'complete') {
                 console.log("doc is ready");
                 @if(Auth::check())
-                Echo.channel('App.User.{{Auth::user()->id}}')
-                    .listen('UserLoggedIntoFantasy', (e) => {
-                        console.log(e.user);
-                    })
-                    .listen('UserGamesImported', (e) => {
-                        console.log(e.games);
-                });
+                    Echo.private('App.User.1')
+                        .listen('UserDataInformationLoaded', (e) => {
+                            console.log(e);
+                        });
                 @endif
             }
         };

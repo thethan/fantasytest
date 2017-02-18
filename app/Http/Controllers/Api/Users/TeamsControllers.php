@@ -30,7 +30,7 @@ class TeamsController extends Controller
         event(new UserLoggedIntoFantasy(Auth::user()));
 
         return response()->json([
-            'data' => ['id' => 'don']
+            'data' => []
         ]);
     }
 
