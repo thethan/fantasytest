@@ -20,7 +20,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Collection;
 
 
-class ImportUserDataFromYahoo
+class ImportUserDataFromYahoo implements ShouldQueue
 {
     use InteractsWithQueue, DispatchesJobs;
 

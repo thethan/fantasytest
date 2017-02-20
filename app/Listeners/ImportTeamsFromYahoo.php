@@ -2,14 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Events\UserDataInformationLoaded;
-use App\Events\UserLeaguesImported;
-use App\Events\UserTeamsImported;
 use App\Game;
 use App\Team;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Events\UserLeaguesImported;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
 
 class ImportTeamsFromYahoo implements ShouldQueue
 {
@@ -24,10 +22,7 @@ class ImportTeamsFromYahoo implements ShouldQueue
     }
 
     /**
-     * Handle the event.
-     *
-     * @param  UserTeamsImported  $event
-     * @return void
+     * @param UserLeaguesImported $event
      */
     public function handle(UserLeaguesImported $event)
     {

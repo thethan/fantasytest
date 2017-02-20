@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * include Vue and Vue Resource. This gives a great starting point for
@@ -13,7 +12,12 @@ require('./bootstrap');
  * the application, or feel free to tweak this setup for your needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+Vue.component('seasons', require('./components/dashboard/Games.vue'));
+Vue.component(
+    'games',
+    require('./components/dashboard/Games.vue')
+);
+
 
 const app = new Vue({
     el: '#app'
@@ -27,7 +31,16 @@ window.Echo = new EchoLibrary({
     key: '4cf724c42f1634a6f6a8'
 });
 
-Echo.private('App.User.1')
-    .listen('UserDataInformationLoaded', (e) => {
-        console.log(e);
+let userId = document.getElementById('user_id').value
+
+console.log(userId);
+Echo.private('App.User.'+userId)
+    .listen('UserGamesData', (e) => {
+        console.log(e.games);
+    })
+    .listen('UserLeaguesData', (e) => {
+        console.log(e.leagues);
+    })
+    .listen('UserTeamsData', (e) => {
+        console.log(e.teams);
     });

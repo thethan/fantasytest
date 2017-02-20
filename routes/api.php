@@ -41,7 +41,11 @@ Route::group(
             Route::get('teams', 'TeamsController@index');
             Route::get('league/roster', 'TeamsController@roster'); # @todo change this
             Route::get('users', function(){
-                return response()->json(['data' => ['user' => Auth::user(), 'games' => Auth::user()->games(), 'leagues' => Auth::user()->leagues(),'teams' => Auth::user()->teams ]]);
+                event(new \App\Events\UserGamesData(Auth::user()));
+                event(new \App\Events\UserLeaguesData(Auth::user()));
+                event(new \App\Events\UserTeamsData(Auth::user()));
+
+                //return response()->json(['data' => ['user' => Auth::user(), 'games' => Auth::user()->games(), 'leagues' => Auth::user()->leagues(),'teams' => Auth::user()->teams ]]);
             });
         });
     });

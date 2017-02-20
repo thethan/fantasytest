@@ -14,7 +14,7 @@ class League extends Model
     protected $fillable = ['league_id', 'game_id','name'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function users()
     {
@@ -66,11 +66,11 @@ class League extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function roster()
     {
-        return $this->hasOne(League::class);
+        return $this->hasMany(LeagueRoster::class);
     }
 
 

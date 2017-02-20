@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Contracts\Yahoo\Services\Leagues\GetLeagueSettings;
 use App\Http\Middleware\AuthStateMiddleware;
 use App\DataTransferObjects\Users\Games\UsersGamesDto;
 use App\Contracts\Yahoo\Services\Leagues\GetLeaguesContract;
@@ -69,6 +70,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(GetLeaguesContract::class, function($app){
             return new GetSettings(new SettingsResponse());
+        });
+
+        $this->app->bind(GetLeagueSettings::class, function($app){
+            return new GetLea(new SettingsResponse());
         });
     }
 }

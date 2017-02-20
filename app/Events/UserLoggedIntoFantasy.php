@@ -7,10 +7,9 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 
-class UserLoggedIntoFantasy implements ShouldBroadcast
+class UserLoggedIntoFantasy
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

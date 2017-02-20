@@ -11,11 +11,11 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class UserDataInformationLoaded
+class UserGamesData implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user, $teams, $leagues, $games;
+    public $user, $games;
     /**
      * Create a new event instance.
      *
@@ -24,18 +24,8 @@ class UserDataInformationLoaded
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->teams = $user->teams;
-        // Needed to write sql queries to join
         $this->games = $user->games();
-        // Needed to write sql queries to join
-        $this->leagues = $user->leagues();
     }
-
-    protected function games(User $user)
-    {
-        return $user->games;
-    }
-
 
     /**
      * Get the channels the event should broadcast on.

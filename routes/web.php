@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 
 });
 
@@ -56,7 +56,9 @@ Route::group(['prefix' => 'yahoo'], function(){
 
 
 });
+
+
+
 Auth::routes();
 
 Route::get('/players', 'HomeController@players')->middleware('auth');
-Route::get('/home', 'HomeController@index');
