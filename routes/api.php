@@ -39,7 +39,6 @@ Route::group(
         Route::group(['prefix' => 'users', 'namespace' => 'Users'], function() {
             Route::get('games', 'GamesController@index');
             Route::get('teams', 'TeamsController@index');
-            Route::get('league/roster', 'TeamsController@roster'); # @todo change this
             Route::get('users', function(){
                 event(new \App\Events\UserGamesData(Auth::user()));
                 event(new \App\Events\UserLeaguesData(Auth::user()));
@@ -51,6 +50,14 @@ Route::group(
     });
 });
 
+
+Route::group(['prefix' => 'drafts', 'middleware'=>'auth:api','namespace' => 'Api'], function (){
+    Route::get('', 'DraftController@index');
+});
+
+Route::group(['prefix' => 'leagues', 'middleware'=>'auth:api', 'namespace' => 'Api'], function (){
+    Route::get('{id}', 'LeaguesController@show');
+});
 
 Route::group(['prefix' => 'yahoo', 'middleware'=>'authState'], function () {
     Route::post('callback', function (\Illuminate\Http\Request $request) {

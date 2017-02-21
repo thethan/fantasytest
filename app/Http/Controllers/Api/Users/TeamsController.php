@@ -1,15 +1,13 @@
 <?php
 
+
 namespace App\Http\Controllers\Api\Users;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 use App\Events\UserLoggedIntoFantasy;
 
-/**
- * Class TeamsController
- * @package App\Http\Controllers\Api\Users
- */
+
 class TeamsController extends Controller
 {
     /**
@@ -17,7 +15,9 @@ class TeamsController extends Controller
      */
     public function index()
     {
+
         event(new UserLoggedIntoFantasy(Auth::user()));
+        dump('hello');
         return response()->json([
             'data' => []
         ]);

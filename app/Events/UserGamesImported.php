@@ -7,7 +7,6 @@ use App\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -18,10 +17,12 @@ class UserGamesImported implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $game, $user, $dto;
+
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * UserGamesImported constructor.
+     * @param User $user
+     * @param Game $game
+     * @param TeamInfoFromResponseDto $dto
      */
     public function __construct(User $user, Game $game, TeamInfoFromResponseDto $dto)
     {

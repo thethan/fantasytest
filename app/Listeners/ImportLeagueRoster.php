@@ -42,6 +42,7 @@ class ImportLeagueRoster implements ShouldQueue
         $settings = $dto->simpleResponse()->first();
         $leagueRosterCount = 0;
         $league->name = $settings['name'];
+        $league->draft_status = $settings['draft_status'];
         foreach($settings['roster_positions'] as $roster_position){
 
             $roster = LeagueRoster::firstOrnew(

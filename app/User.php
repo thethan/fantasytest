@@ -80,4 +80,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Team::class);
     }
+
+    public function drafts()
+    {
+        return DB::table('leagues')
+            ->join('teams', 'leagues.id', '=', 'teams.league_id')
+            ->select('leagues.*')
+            ->where('teams.user_id', '=', $this->id)
+            ->distinct()
+            ->get();
+    }
 }

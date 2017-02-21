@@ -58,6 +58,15 @@ Route::group(['prefix' => 'yahoo'], function(){
 });
 
 
+Route::group(['prefix' => 'draft'], function (){
+    Route::get('', function(){
+        return view('draft.index');
+    });
+    Route::get('{id}', function(\Illuminate\Http\Request $request){
+        return view('draft.show', ['league_id' => $request->input('id')]);
+    });
+});
+
 
 Auth::routes();
 

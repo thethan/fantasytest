@@ -32,7 +32,7 @@ class ImportLeagueRosterTest extends TestCase
         $settingsResponseDto = Mockery::mock(\App\Yahoo\Responses\Leagues\SettingsResponse::class);
         $settingsResponseDto->shouldReceive('simpleResponse')->andReturn(
             new \Illuminate\Support\Collection(
-                [['name' => 'league Name', 'roster_positions' => [
+                [['name' => 'league Name', 'draft_status' => 'predraft', 'roster_positions' => [
                     ['roster_position'=> ['count' => 1, 'position' => 'QB']
                     ],
                     ['roster_position'=> ['count' => 5, 'position' => 'BN']

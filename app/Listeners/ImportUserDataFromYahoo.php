@@ -2,22 +2,15 @@
 
 namespace App\Listeners;
 
-use App\Contracts\Yahoo\Services\Users\GetUserTeamsContract;
-use App\DataTransferObjects\Users\Games\UsersTeamsDto;
-use App\DataTransferObjects\Users\Teams\TeamInfoFromResponseDto;
+use App\Game;
 use App\Events\UserGamesImported;
 use App\Events\UserLoggedIntoFantasy;
-use App\Exceptions\Fantasy\FailedToSaveUserGamesInfo;
-use App\Exceptions\YahooResponseException;
-use App\Game;
-use App\Jobs\QueueUserLeaguesJob;
-use App\Jobs\SaveLeagueJob;
-use App\Yahoo\Responses\User\TeamResponseForSaving;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Support\Collection;
+use App\Contracts\Yahoo\Services\Users\GetUserTeamsContract;
+use App\DataTransferObjects\Users\Teams\TeamInfoFromResponseDto;
 
 
 class ImportUserDataFromYahoo implements ShouldQueue
@@ -37,8 +30,7 @@ class ImportUserDataFromYahoo implements ShouldQueue
 
     /**
      * @param UserLoggedIntoFantasy $event
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws YahooResponseException
+     * @return $this
      */
     public function handle(UserLoggedIntoFantasy $event)
     {
@@ -67,10 +59,9 @@ class ImportUserDataFromYahoo implements ShouldQueue
             } else {
                 $model = Game::where('game_id', $game['game_id'])->firstOrFail();
             }
-
             event(new UserGamesImported($event->user, $model, new TeamInfoFromResponseDto($game)));
 
         }
-
+        return $this;
     }
 }

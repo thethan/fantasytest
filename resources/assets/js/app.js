@@ -18,6 +18,9 @@ Vue.component(
     require('./components/dashboard/Games.vue')
 );
 
+Vue.component('drafts', require('./components/dashboard/Drafts.vue'));
+
+Vue.component('room', require('./components/dashboard/Room.vue'));
 
 const app = new Vue({
     el: '#app'
